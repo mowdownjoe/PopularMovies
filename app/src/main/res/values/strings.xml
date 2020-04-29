@@ -2,5 +2,4 @@
     <string name="app_name">Popular Movies</string>
     <string name="network_error">We couldn\'t fetch any data. Please try again later.</string>
     <string name="root_api_url">https://api.themoviedb.org/3/movie/550?</string>
-    <string name="base_poster_path">https://image/tmdb.org/t/p/w185/</string>
 </resources>
