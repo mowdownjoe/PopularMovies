@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.example.popularmovies.DetailActivity;
-import com.android.example.popularmovies.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,19 +27,21 @@ public class JsonUtils {
     public static final String BASE_POSTER_PATH = "https://image/tmdb.org/t/p/w185/";
     public static final String BASE_THUMBNAIL_PATH = "https://image/tmdb.org/t/p/w92/";
 
+    @Nullable
     public static JSONArray getResultsArray(JSONObject rawResponse) throws JSONException, MovieJsonException {
-        if (rawResponse.has(RESULTS)){
+        if (rawResponse.has(RESULTS)) {
             return rawResponse.getJSONArray(RESULTS);
-        } else if (rawResponse.has(ERROR_STATUS)){
+        } else if (rawResponse.has(ERROR_STATUS)) {
             int errorCode = rawResponse.getInt(ERROR_STATUS);
             String errorMessage = rawResponse.getString(ERROR_MESSAGE);
-            Log.e("JsonUtils.getResults", "HTTP error "+errorCode+": "+errorMessage);
+            Log.e("JsonUtils.getResults", "HTTP error " + errorCode + ": " + errorMessage);
             return null;
         } else {
             throw new MovieJsonException("Unusual error detected.");
         }
     }
 
+    @NonNull
     private static Uri getPosterUri(JSONObject movieData, boolean isThumbnail)
             throws JSONException, MovieJsonException {
         Uri result;
@@ -50,21 +54,22 @@ public class JsonUtils {
             }
             result = uri;
         } else {
-                    throw new MovieJsonException("Movie data is missing a poster path.");
-                }
+            throw new MovieJsonException("Movie data is missing a poster path.");
+        }
         return result;
     }
 
+    @NonNull
     public static Uri getPosterUri(JSONObject movieData) throws JSONException, MovieJsonException {
         return getPosterUri(movieData, false);
     }
 
 
-
+    @NonNull
     public static Intent buildMovieIntent(JSONObject movieData, Context context)
             throws JSONException, MovieJsonException {
         Intent intent = new Intent(context, DetailActivity.class);
-        if (movieData.has(TITLE)){
+        if (movieData.has(TITLE)) {
             String movieTitle = movieData.getString(TITLE);
             String posterUrl = getPosterUri(movieData, true).toString();
             String plotSynopsis = movieData.getString(OVERVIEW);

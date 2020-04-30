@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
 
@@ -27,8 +28,11 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     }
 
     private JSONArray movieData;
+    private PosterOnClickListener onClickListener;
 
-
+    interface PosterOnClickListener{
+        void onListItemClick(JSONObject movieData);
+    }
 
     @NonNull
     @Override
@@ -75,7 +79,11 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
         @Override
         public void onClick(View v) {
-
+            try {
+                onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));
+            } catch (JSONException e) {
+                Log.e("PosterViewHolderOnClick", "Cannot find JSON Object in array", e);
+            }
         }
     }
 }
