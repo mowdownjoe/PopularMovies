@@ -3,6 +3,7 @@ package com.android.example.popularmovies.utils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ public class NetworkUtils {
     private static final String API_KEY_QUERY = "?api_key=";
 
     @Nullable
+    @WorkerThread
     public static JSONObject getMovies(String node, String apiKey) throws IOException, JSONException {
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()

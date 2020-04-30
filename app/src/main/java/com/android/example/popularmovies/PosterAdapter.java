@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.popularmovies.utils.JsonUtils;
@@ -23,15 +24,21 @@ import org.json.JSONObject;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
 
-    public void setMovieData(JSONArray movieData) {
-        this.movieData = movieData;
-    }
-
+    @Nullable
     private JSONArray movieData;
     private PosterOnClickListener onClickListener;
 
     interface PosterOnClickListener{
         void onListItemClick(JSONObject movieData);
+    }
+
+    public PosterAdapter(PosterOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public void setMovieData(JSONArray movieData) {
+        this.movieData = movieData;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -40,29 +47,34 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.poster_grid_item, parent, false);
 
-        //TODO Create viewHolder and return
-        return null;
+        return new PosterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PosterViewHolder holder, int position) {
-        try {
-            holder.bind(JsonUtils.getPosterUri(movieData.getJSONObject(position)));
-        } catch (JSONException | MovieJsonException e) {
-            Log.e("PosterAdapter.onBind", "Error occurred during binding", e);
+        if (movieData != null) {
+            try {
+                holder.bind(JsonUtils.getPosterUri(movieData.getJSONObject(position)));
+            } catch (JSONException | MovieJsonException e) {
+                Log.e("PosterAdapter.onBind", "Error occurred during binding", e);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (movieData != null) {
+            return movieData.length();
+        } else {
+            return 0;
+        }
     }
 
     public class PosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView posterImage;
 
-        public PosterViewHolder(@NonNull View itemView) {
+        PosterViewHolder(@NonNull View itemView) {
             super(itemView);
             posterImage = itemView.findViewById(R.id.iv_poster_image);
         }
@@ -79,10 +91,12 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
         @Override
         public void onClick(View v) {
-            try {
-                onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));
-            } catch (JSONException e) {
-                Log.e("PosterViewHolderOnClick", "Cannot find JSON Object in array", e);
+            if (movieData != null) {
+                try {
+                    onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));
+                } catch (JSONException e) {
+                    Log.e("PosterViewHolderOnClick", "Cannot find JSON Object in array", e);
+                }
             }
         }
     }
