@@ -1,5 +1,6 @@
 package com.android.example.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,10 +35,18 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setHasFixedSize(true);
 
         //TODO Set spanCount based on orientation and shortest width.
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
         binding.rvMoviePosterGrid.setLayoutManager(layoutManager);
 
-        //TODO Add adapter once complete.
+        adapter = new PosterAdapter(this);
+        binding.rvMoviePosterGrid.setAdapter(adapter);
+
+        loadMovieData();
+    }
+
+    private void loadMovieData() {
+        showPosterList();
+        new FetchMoviesTask().execute(getString(R.string.api_key_v3), NetworkUtils.POPULAR_NODE);
     }
 
     private void showPosterList(){
@@ -59,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         }*/
     }
 
+    @SuppressLint("StaticFieldLeak")
     class FetchMoviesTask extends AsyncTask<String, Void, JSONArray>{
 
         @Override
@@ -81,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
 
         @Override
         protected JSONArray doInBackground(String... params) {
-            if (params.length == 0 || params.length == 1) {
+            if (params.length != 2) {
                 return null;
             }
 

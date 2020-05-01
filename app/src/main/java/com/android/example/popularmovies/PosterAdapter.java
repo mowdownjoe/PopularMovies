@@ -32,11 +32,11 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         void onListItemClick(JSONObject movieData);
     }
 
-    public PosterAdapter(PosterOnClickListener onClickListener) {
+    PosterAdapter(PosterOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void setMovieData(JSONArray movieData) {
+    void setMovieData(JSONArray movieData) {
         this.movieData = movieData;
         notifyDataSetChanged();
     }
@@ -72,6 +72,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
     public class PosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        static final String TAG_ONCLICK = "PosterViewHolderOnClick";
         ImageView posterImage;
 
         PosterViewHolder(@NonNull View itemView) {
@@ -85,8 +86,12 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         }
 
         void bind(Uri uri){
-            //TODO Add Placeholder and Error arguments to Picasso train, and related drawables.
-            Picasso.get().load(uri).into(posterImage);
+            Log.v("PosterViewHolder.bind", "Loading from URI: "+uri.toString());
+            Picasso.get()
+                    .load(uri)
+                    .placeholder(R.drawable.loading_poster)
+                    .error(R.drawable.error_poster)
+                    .into(posterImage);
         }
 
         @Override
@@ -95,8 +100,10 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
                 try {
                     onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));
                 } catch (JSONException e) {
-                    Log.e("PosterViewHolderOnClick", "Cannot find JSON Object in array", e);
+                    Log.e(TAG_ONCLICK, "Cannot find JSON Object in array", e);
                 }
+            } else {
+                Log.w(TAG_ONCLICK, "movieData is null");
             }
         }
     }
