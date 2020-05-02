@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="network_error">We couldn\'t fetch any data. Please try again later.</string>
+    <string name="sort_highest_str">Sort by highest rated</string>
+    <string name="sort_popular_str">Sort by most popular</string>
+    <string name="detail_desc">Poster for movie</string>
 </resources>

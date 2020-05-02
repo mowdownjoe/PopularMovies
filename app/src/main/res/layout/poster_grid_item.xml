@@ -9,5 +9,6 @@
         android:id="@+id/iv_poster_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:padding="8dp"/>
 </FrameLayout>

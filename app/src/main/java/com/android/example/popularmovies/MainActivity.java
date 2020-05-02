@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +29,29 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
 
     ActivityMainBinding binding;
     PosterAdapter adapter;
+    private static FetchMoviesTask fetchMoviesTask;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_order_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (fetchMoviesTask != null){
+            fetchMoviesTask.cancel(true);
+        }
+        if (item.getItemId() == R.id.sort_popular_mi){
+            loadMovieData(NetworkUtils.POPULAR_NODE);
+            return true;
+        } else if (item.getItemId() == R.id.sort_highest_rated_mi){
+            loadMovieData(NetworkUtils.TOP_RATED_NODE);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setHasFixedSize(true);
 
         //TODO Set spanCount based on orientation and shortest width.
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
         binding.rvMoviePosterGrid.setLayoutManager(layoutManager);
 
         adapter = new PosterAdapter(this);
@@ -44,9 +71,14 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         loadMovieData();
     }
 
-    private void loadMovieData() {
+    private void loadMovieData(){
+        loadMovieData(NetworkUtils.POPULAR_NODE);
+    }
+
+    private void loadMovieData(String sortOrder) {
         showPosterList();
-        new FetchMoviesTask().execute(getString(R.string.api_key_v3), NetworkUtils.POPULAR_NODE);
+        fetchMoviesTask = new FetchMoviesTask();
+        fetchMoviesTask.execute(getString(R.string.api_key_v3), sortOrder);
     }
 
     private void showPosterList(){

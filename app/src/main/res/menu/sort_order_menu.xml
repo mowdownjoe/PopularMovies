@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/sort_order"
+        android:checkableBehavior="single" >
+        <item
+            android:id="@+id/sort_highest_rated_mi"
+            android:contentDescription="@string/sort_highest_str"
+            android:title="@string/sort_highest_str" />
+        <item
+            android:id="@+id/sort_popular_mi"
+            android:checked="true"
+            android:contentDescription="@string/sort_popular_str"
+            android:title="@string/sort_popular_str" />
+    </group>
+</menu>

@@ -24,7 +24,7 @@ public class JsonUtils {
     public static final String OVERVIEW = "overview";
     public static final String VOTE_AVERAGE = "vote_average";
     public static final String RELEASE_DATE = "release_date";
-    public static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w342";
+    public static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w500";
     public static final String BASE_THUMBNAIL_PATH = "https://image.tmdb.org/t/p/w185";
 
     @Nullable
