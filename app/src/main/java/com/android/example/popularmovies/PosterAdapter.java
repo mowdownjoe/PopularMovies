@@ -78,6 +78,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         PosterViewHolder(@NonNull View itemView) {
             super(itemView);
             posterImage = itemView.findViewById(R.id.iv_poster_image);
+            itemView.setOnClickListener(this);
         }
 
         void bind(String url){
@@ -96,6 +97,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
         @Override
         public void onClick(View v) {
+            Log.v(TAG_ONCLICK, "Received click on item "+getAdapterPosition());
             if (movieData != null) {
                 try {
                     onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));

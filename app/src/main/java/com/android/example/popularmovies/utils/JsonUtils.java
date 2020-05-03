@@ -73,7 +73,7 @@ public class JsonUtils {
             String movieTitle = movieData.getString(TITLE);
             String posterUrl = getPosterUri(movieData, true).toString();
             String plotSynopsis = movieData.getString(OVERVIEW);
-            long userRating = movieData.getLong(VOTE_AVERAGE);
+            double userRating = movieData.getDouble(VOTE_AVERAGE);
             String releaseDate = movieData.getString(RELEASE_DATE);
             intent.putExtra(TITLE, movieTitle)
                     .putExtra(POSTER_PATH, posterUrl)

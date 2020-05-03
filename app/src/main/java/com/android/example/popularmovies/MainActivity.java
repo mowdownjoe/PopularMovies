@@ -32,28 +32,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     private static FetchMoviesTask fetchMoviesTask;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sort_order_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (fetchMoviesTask != null){
-            fetchMoviesTask.cancel(true);
-        }
-        if (item.getItemId() == R.id.sort_popular_mi){
-            loadMovieData(NetworkUtils.POPULAR_NODE);
-            return true;
-        } else if (item.getItemId() == R.id.sort_highest_rated_mi){
-            loadMovieData(NetworkUtils.TOP_RATED_NODE);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -69,6 +47,30 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setAdapter(adapter);
 
         loadMovieData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_order_menu, menu);
+        menu.findItem(R.id.sort_popular_mi).setChecked(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (fetchMoviesTask != null){
+            fetchMoviesTask.cancel(true);
+            item.setChecked(true);
+        }
+        if (item.getItemId() == R.id.sort_popular_mi){
+            loadMovieData(NetworkUtils.POPULAR_NODE);
+            return true;
+        } else if (item.getItemId() == R.id.sort_highest_rated_mi){
+            loadMovieData(NetworkUtils.TOP_RATED_NODE);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadMovieData(){
@@ -93,11 +95,12 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
 
     @Override
     public void onListItemClick(JSONObject movieData) {
-        /*try {
+        Log.v("MainActivity", "Received click on list item.");
+        try {
             startActivity(JsonUtils.buildMovieIntent(movieData, this));
         } catch (JSONException | MovieJsonException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
