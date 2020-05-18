@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.example.popularmovies.DetailActivity;
+import com.android.example.popularmovies.ui.detail.DetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

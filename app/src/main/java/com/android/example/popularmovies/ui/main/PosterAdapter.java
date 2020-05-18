@@ -1,6 +1,5 @@
-package com.android.example.popularmovies;
+package com.android.example.popularmovies.ui.main;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.utils.JsonUtils;
 import com.android.example.popularmovies.utils.MovieJsonException;
-import com.squareup.picasso.Picasso;
-
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

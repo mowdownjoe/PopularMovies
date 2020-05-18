@@ -1,10 +1,11 @@
-package com.android.example.popularmovies;
+package com.android.example.popularmovies.ui.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.databinding.ActivityDetailBinding;
 import com.android.example.popularmovies.utils.JsonUtils;
 import com.squareup.picasso.Picasso;
