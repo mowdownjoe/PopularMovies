@@ -20,6 +20,7 @@ public class JsonUtils {
     public static final String TITLE = "title";
     private static final String ERROR_STATUS = "status_code";
     private static final String ERROR_MESSAGE = "status_message";
+    public static final String MOVIE_ID = "id";
     public static final String POSTER_PATH = "poster_path";
     public static final String OVERVIEW = "overview";
     public static final String VOTE_AVERAGE = "vote_average";
@@ -70,12 +71,14 @@ public class JsonUtils {
             throws JSONException, MovieJsonException {
         Intent intent = new Intent(context, DetailActivity.class);
         if (movieData.has(TITLE)) {
+            int movieId = movieData.getInt(MOVIE_ID);
             String movieTitle = movieData.getString(TITLE);
             String posterUrl = getPosterUri(movieData, true).toString();
             String plotSynopsis = movieData.getString(OVERVIEW);
             double userRating = movieData.getDouble(VOTE_AVERAGE);
             String releaseDate = movieData.getString(RELEASE_DATE);
             intent.putExtra(TITLE, movieTitle)
+                    .putExtra(MOVIE_ID, movieId)
                     .putExtra(POSTER_PATH, posterUrl)
                     .putExtra(OVERVIEW, plotSynopsis)
                     .putExtra(VOTE_AVERAGE, userRating)

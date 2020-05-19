@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity(tableName = "movies")
 public class FavMovieEntry {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false) //Will use ID from API
     private int id;
     private String title;
     @ColumnInfo(name = JsonUtils.OVERVIEW)
@@ -28,9 +28,9 @@ public class FavMovieEntry {
     @ColumnInfo(name = JsonUtils.RELEASE_DATE)
     private Date releaseDate;
 
-    @Ignore
-    public FavMovieEntry(String title, String description, double userRating, String posterUrl,
+    public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,
                          Date releaseDate) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.userRating = userRating;
@@ -40,8 +40,9 @@ public class FavMovieEntry {
 
     @Ignore
     @SuppressLint("SimpleDateFormat")
-    public FavMovieEntry(String title, String description, double userRating, String posterUrl,
+    public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,
                          String releaseDateString) throws ParseException {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.userRating = userRating;
@@ -49,16 +50,6 @@ public class FavMovieEntry {
         //Parses date string passed by API
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         releaseDate = format.parse(releaseDateString);
-    }
-
-    public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,
-                         Date releaseDate) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.userRating = userRating;
-        this.posterUrl = posterUrl;
-        this.releaseDate = releaseDate;
     }
 
     public int getId() {
