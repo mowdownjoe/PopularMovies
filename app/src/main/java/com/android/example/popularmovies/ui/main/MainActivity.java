@@ -1,7 +1,5 @@
 package com.android.example.popularmovies.ui.main;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,17 +12,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
+import com.android.example.popularmovies.ui.PosterAdapter;
 import com.android.example.popularmovies.utils.JsonUtils;
 import com.android.example.popularmovies.utils.MovieJsonException;
 import com.android.example.popularmovies.utils.NetworkUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.PosterOnClickListener {
 
@@ -50,15 +47,15 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setAdapter(adapter);
 
         viewModel.getStatus().observe(this, loadingStatus -> {
-            if (loadingStatus == MainViewModel.LoadingStatus.LOADING){
+            if (loadingStatus == LoadingStatus.LOADING){
                 binding.pbLoadingSpinner.setVisibility(View.VISIBLE);
                 binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
                 binding.tvErrorText.setVisibility(View.INVISIBLE);
-            } else if (loadingStatus == MainViewModel.LoadingStatus.ERROR){
+            } else if (loadingStatus == LoadingStatus.ERROR){
                 binding.tvErrorText.setVisibility(View.VISIBLE);
                 binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
                 binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);
-            } else if (loadingStatus == MainViewModel.LoadingStatus.DONE){
+            } else if (loadingStatus == LoadingStatus.DONE){
                 binding.rvMoviePosterGrid.setVisibility(View.VISIBLE);
                 binding.tvErrorText.setVisibility(View.INVISIBLE);
                 binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);

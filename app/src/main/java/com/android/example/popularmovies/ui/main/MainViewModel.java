@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.utils.JsonUtils;
 import com.android.example.popularmovies.utils.MovieJsonException;
 import com.android.example.popularmovies.utils.NetworkUtils;
@@ -19,10 +21,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class MainViewModel extends ViewModel {
-
-    enum LoadingStatus {
-        INIT, LOADING, DONE, ERROR
-    }
 
     private MutableLiveData<LoadingStatus> status;
     private MutableLiveData<JSONArray> movieData;
@@ -40,7 +38,7 @@ public class MainViewModel extends ViewModel {
         return movieData;
     }
 
-    public void fetchMovieData(String apiKey, String sortOrder){
+    public void fetchMovieData(@NonNull String apiKey, String sortOrder){
         if (fetchMoviesTask != null) {
             fetchMoviesTask.cancel(true);
         }

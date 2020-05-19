@@ -1,4 +1,4 @@
-package com.android.example.popularmovies.ui.main;
+package com.android.example.popularmovies.ui;
 
 import android.net.Uri;
 import android.util.Log;
@@ -26,15 +26,15 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     private JSONArray movieData;
     private PosterOnClickListener onClickListener;
 
-    interface PosterOnClickListener{
+    public interface PosterOnClickListener{
         void onListItemClick(JSONObject movieData);
     }
 
-    PosterAdapter(PosterOnClickListener onClickListener) {
+    public PosterAdapter(PosterOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    void setMovieData(JSONArray movieData) {
+    public void setMovieData(JSONArray movieData) {
         this.movieData = movieData;
         notifyDataSetChanged();
     }
