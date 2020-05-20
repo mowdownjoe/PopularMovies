@@ -15,7 +15,7 @@ public interface FavMovieDao {
     int countMovieById(int id); //Checks if movie with this ID exists.
 
     @Query("SELECT * FROM movies")
-    List<LiveData<FavMovieEntry>> getAllFavorites();
+    LiveData<List<FavMovieEntry>> getAllFavorites();
 
     @Insert
     void addMovieToFavorites(FavMovieEntry movieEntry);

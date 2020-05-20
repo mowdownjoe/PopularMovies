@@ -4,4 +4,6 @@
     <string name="sort_highest_str">Sort by highest rated</string>
     <string name="sort_popular_str">Sort by most popular</string>
     <string name="detail_desc">Poster for movie</string>
+    <string name="rating_detail">User rating: %.1f</string>
+    <string name="date_detail">Released %tD</string>
 </resources>
