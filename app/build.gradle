@@ -57,11 +57,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
-    //Rrrom for DB
+    //Room for DB
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    //Moshi for JSON
+    implementation 'com.squareup.moshi:moshi:1.9.2'
 
 
 }
