@@ -1,9 +1,12 @@
 package com.android.example.popularmovies.utils;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
+
+import com.android.example.popularmovies.database.FavMovieEntry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +25,7 @@ public class NetworkUtils {
     public static final String POPULAR_NODE = "/popular";
     public static final String TOP_RATED_NODE = "/top_rated";
     private static final String API_KEY_QUERY = "?api_key=";
+    private static final String APPEND_TO_QUERY = "append_to_response=reviews,videos";
 
     @Nullable
     @WorkerThread
@@ -44,5 +48,11 @@ public class NetworkUtils {
             Log.e(TAG_GET_MOVIES, "Error occurred when requesting movies now playing.", e);
             throw e;
         }
+    }
+
+    public static Uri getMovieURI(FavMovieEntry movie, String apiKey){
+        String uriString = ROOT_API_URL + '/' + movie.getId() +
+                API_KEY_QUERY + apiKey + '&' + APPEND_TO_QUERY;
+        return Uri.parse(uriString);
     }
 }

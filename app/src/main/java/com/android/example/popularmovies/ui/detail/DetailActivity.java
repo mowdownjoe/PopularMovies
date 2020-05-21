@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.database.FavMovieEntry;
 import com.android.example.popularmovies.databinding.ActivityDetailBinding;
-import com.android.example.popularmovies.utils.JsonUtils;
+import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;

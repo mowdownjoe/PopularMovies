@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.android.example.popularmovies.utils.JsonUtils;
+import com.android.example.popularmovies.utils.json.JsonUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

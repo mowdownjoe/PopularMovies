@@ -10,9 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.example.popularmovies.LoadingStatus;
-import com.android.example.popularmovies.utils.JsonUtils;
 import com.android.example.popularmovies.utils.MovieJsonException;
 import com.android.example.popularmovies.utils.NetworkUtils;
+import com.android.example.popularmovies.utils.json.JsonUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;

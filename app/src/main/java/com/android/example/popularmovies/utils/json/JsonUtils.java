@@ -1,4 +1,4 @@
-package com.android.example.popularmovies.utils;
+package com.android.example.popularmovies.utils.json;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.example.popularmovies.ui.detail.DetailActivity;
+import com.android.example.popularmovies.utils.MovieJsonException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,9 +28,11 @@ public class JsonUtils {
     public static final String RELEASE_DATE = "release_date";
     private static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w500";
     private static final String BASE_THUMBNAIL_PATH = "https://image.tmdb.org/t/p/w185";
+    public static final String REVIEWS = "reviews";
+    public static final String VIDEOS = "videos";
 
     @Nullable
-    public static JSONArray getResultsArray(JSONObject rawResponse) throws JSONException, MovieJsonException {
+    public static JSONArray getResultsArray(@NonNull JSONObject rawResponse) throws JSONException {
         if (rawResponse.has(RESULTS)) {
             return rawResponse.getJSONArray(RESULTS);
         } else if (rawResponse.has(ERROR_STATUS)) {
@@ -42,9 +45,29 @@ public class JsonUtils {
         }
     }
 
+    public static JSONArray getMovieReviews(@NonNull JSONObject movieData) throws JSONException {
+        if (movieData.has(REVIEWS)){
+            JSONObject reviewsObject = movieData.getJSONObject(REVIEWS);
+            if (reviewsObject.has(RESULTS)){
+                return reviewsObject.getJSONArray(RESULTS);
+            }
+        }
+        throw new MovieJsonException("No reviews found for movie.");
+    }
+
+    public static JSONArray getMovieTrailers(@NonNull JSONObject movieData) throws JSONException {
+        if (movieData.has(VIDEOS)){
+            JSONObject videoObject = movieData.getJSONObject(VIDEOS);
+            if (videoObject.has(RESULTS)){
+                return videoObject.getJSONArray(VIDEOS);
+            }
+        }
+        throw new MovieJsonException("No videos found for movie.");
+    }
+
     @NonNull
-    private static Uri getPosterUri(JSONObject movieData, boolean isThumbnail)
-            throws JSONException, MovieJsonException {
+    private static Uri getPosterUri(@NonNull JSONObject movieData, boolean isThumbnail)
+            throws JSONException {
         Uri result;
         if (movieData.has(POSTER_PATH)) {
             Uri uri;
@@ -61,13 +84,13 @@ public class JsonUtils {
     }
 
     @NonNull
-    public static Uri getPosterUri(JSONObject movieData) throws JSONException, MovieJsonException {
+    public static Uri getPosterUri(@NonNull JSONObject movieData) throws JSONException {
         return getPosterUri(movieData, false);
     }
 
 
     @NonNull
-    public static Intent buildMovieIntent(JSONObject movieData, Context context)
+    public static Intent buildMovieIntent(@NonNull JSONObject movieData, @NonNull Context context)
             throws JSONException, MovieJsonException {
         Intent intent = new Intent(context, DetailActivity.class);
         if (movieData.has(TITLE)) {
