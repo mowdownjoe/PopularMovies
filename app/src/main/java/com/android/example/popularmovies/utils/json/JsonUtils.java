@@ -10,10 +10,16 @@ import androidx.annotation.Nullable;
 
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.android.example.popularmovies.utils.MovieJsonException;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JsonUtils {
 
@@ -55,6 +61,16 @@ public class JsonUtils {
         throw new MovieJsonException("No reviews found for movie.");
     }
 
+    public static List<MovieReview> getMovieReviews(JSONArray reviewJson) throws JSONException, IOException {
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<MovieReview> adapter = moshi.adapter(MovieReview.class);
+        LinkedList<MovieReview> reviews = new LinkedList<>();
+        for (int i = 0; i < reviewJson.length(); i++) {
+            reviews.add(adapter.fromJson(reviewJson.getJSONObject(i).toString()));
+        }
+        return reviews;
+    }
+
     public static JSONArray getMovieTrailers(@NonNull JSONObject movieData) throws JSONException {
         if (movieData.has(VIDEOS)){
             JSONObject videoObject = movieData.getJSONObject(VIDEOS);
@@ -63,6 +79,16 @@ public class JsonUtils {
             }
         }
         throw new MovieJsonException("No videos found for movie.");
+    }
+
+    public static List<MovieVideo> getMovieTrailers(JSONArray videoJson) throws JSONException, IOException {
+        Moshi moshi = new Moshi.Builder().add(new MovieVideo.VideoAdapter()).build();
+        JsonAdapter<MovieVideo> adapter = moshi.adapter(MovieVideo.class);
+        LinkedList<MovieVideo> videos = new LinkedList<>();
+        for (int i = 0; i < videoJson.length(); i++) {
+            videos.add(adapter.fromJson(videoJson.getJSONObject(i).toString()));
+        }
+        return videos;
     }
 
     @NonNull
