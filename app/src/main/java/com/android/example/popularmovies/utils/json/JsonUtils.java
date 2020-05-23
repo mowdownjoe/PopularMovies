@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.android.example.popularmovies.utils.MovieJsonException;
 import com.squareup.moshi.JsonAdapter;
@@ -32,8 +33,7 @@ public class JsonUtils {
     public static final String OVERVIEW = "overview";
     public static final String VOTE_AVERAGE = "vote_average";
     public static final String RELEASE_DATE = "release_date";
-    private static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w500";
-    private static final String BASE_THUMBNAIL_PATH = "https://image.tmdb.org/t/p/w185";
+    private static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/";
     public static final String REVIEWS = "reviews";
     public static final String VIDEOS = "videos";
 
@@ -91,22 +91,26 @@ public class JsonUtils {
         return videos;
     }
 
-    @NonNull
-    private static Uri getPosterUri(@NonNull JSONObject movieData, boolean isThumbnail)
-            throws JSONException {
-        Uri result;
+    public static Uri getPosterUri(@NonNull JSONObject movieData, PosterSizes size) throws JSONException {
         if (movieData.has(POSTER_PATH)) {
-            Uri uri;
-            if (isThumbnail) {
-                uri = Uri.parse(BASE_THUMBNAIL_PATH + movieData.getString(POSTER_PATH));
+            if (size != PosterSizes.ORIGINAL) {
+                return Uri.parse(BASE_POSTER_PATH + 'w' + size.size + movieData.getString(POSTER_PATH));
             } else {
-                uri = Uri.parse(BASE_POSTER_PATH + movieData.getString(POSTER_PATH));
+                return Uri.parse(BASE_POSTER_PATH + "original" + movieData.getString(POSTER_PATH));
             }
-            result = uri;
         } else {
             throw new MovieJsonException("Movie data is missing a poster path.");
         }
-        return result;
+    }
+
+    @NonNull
+    private static Uri getPosterUri(@NonNull JSONObject movieData, boolean isThumbnail)
+            throws JSONException {
+        if (isThumbnail){
+            return getPosterUri(movieData, PosterSizes.SMALL);
+        } else {
+            return getPosterUri(movieData, PosterSizes.LARGE);
+        }
     }
 
     @NonNull

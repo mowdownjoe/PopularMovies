@@ -6,7 +6,10 @@ import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MovieVideo {
     private static final String YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v=";
@@ -87,7 +90,6 @@ public class MovieVideo {
     public static class VideoAdapter{
 
 
-
         static final String ISO_LANG = "iso_639_1";
         static final String ISO_COUNTRY = "iso_3166_1";
         static final String ID = "id";
@@ -96,34 +98,35 @@ public class MovieVideo {
         static final String SITE = "site";
         static final String SIZE = "size";
         static final String TYPE = "type";
+        static final char ISO_DIVIDER = '_';
 
         @FromJson
-        MovieVideo videoFromJson(JSONObject videoJSON) throws JSONException {
+        MovieVideo videoFromJson(Map<String, String> videoMap) {
             MovieVideo video = new MovieVideo();
-            video.setIsoIdentifier(videoJSON.getString(ISO_LANG)+'_'
-                    +videoJSON.getString(ISO_COUNTRY));
-            video.setId(videoJSON.getString(ID));
-            video.setKey(videoJSON.getString(KEY));
-            video.setName(videoJSON.getString(NAME));
-            video.setSite(videoJSON.getString(SITE));
-            video.setSize(videoJSON.getInt(SIZE));
-            video.setType(videoJSON.getString(TYPE));
+            video.setIsoIdentifier(videoMap.get(ISO_LANG)+ ISO_DIVIDER
+                    +videoMap.get(ISO_COUNTRY));
+            video.setId(videoMap.get(ID));
+            video.setKey(videoMap.get(KEY));
+            video.setName(videoMap.get(NAME));
+            video.setSite(videoMap.get(SITE));
+            video.setSize(Integer.parseInt(Objects.requireNonNull(videoMap.get(SIZE))));
+            video.setType(videoMap.get(TYPE));
             return video;
         }
 
         @ToJson
-        JSONObject videoToJson(MovieVideo video) throws JSONException {
-            JSONObject jsonObject = new JSONObject();
-            String[] isoIdentifiers = video.getIsoIdentifier().split("_");
-            jsonObject.put(ID, video.getId());
-            jsonObject.put(ISO_LANG, isoIdentifiers[0]);
-            jsonObject.put(ISO_COUNTRY, isoIdentifiers[1]);
-            jsonObject.put(KEY, video.getKey());
-            jsonObject.put(NAME, video.getName());
-            jsonObject.put(SITE, video.getSite());
-            jsonObject.put(SIZE, video.getSize());
-            jsonObject.put(TYPE, video.getType());
-            return jsonObject;
+        Map<String, String> videoToJson(MovieVideo video) throws JSONException {
+            HashMap<String, String> map = new HashMap<>();
+            String[] isoIdentifiers = video.getIsoIdentifier().split(String.valueOf(ISO_DIVIDER));
+            map.put(ID, video.getId());
+            map.put(ISO_LANG, isoIdentifiers[0]);
+            map.put(ISO_COUNTRY, isoIdentifiers[1]);
+            map.put(KEY, video.getKey());
+            map.put(NAME, video.getName());
+            map.put(SITE, video.getSite());
+            map.put(SIZE, String.valueOf(video.getSize()));
+            map.put(TYPE, video.getType());
+            return map;
         }
     }
 }

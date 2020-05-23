@@ -26,7 +26,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<JSONArray> movieData;
     private static FetchMoviesTask fetchMoviesTask;
 
-    public LiveData<LoadingStatus> getStatus() {
+    LiveData<LoadingStatus> getStatus() {
         return status;
     }
 
@@ -34,11 +34,11 @@ public class MainViewModel extends ViewModel {
         status.postValue(newStatus);
     }
 
-    public LiveData<JSONArray> getMovieData() {
+    LiveData<JSONArray> getMovieData() {
         return movieData;
     }
 
-    public void fetchMovieData(@NonNull String apiKey, String sortOrder){
+    void fetchMovieData(@NonNull String apiKey, String sortOrder){
         if (fetchMoviesTask != null) {
             fetchMoviesTask.cancel(true);
         }
@@ -46,7 +46,7 @@ public class MainViewModel extends ViewModel {
         fetchMoviesTask.execute(apiKey, sortOrder);
     }
 
-    public MainViewModel() {
+    MainViewModel() {
         super();
         status = new MutableLiveData<>();
         movieData = new MutableLiveData<>();
