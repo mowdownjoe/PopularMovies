@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.example.popularmovies.database.FavMovieDatabase;
 import com.android.example.popularmovies.database.FavMovieEntry;
 
+import java.util.Objects;
+
 public class DetailViewModel extends AndroidViewModel {
 
     private MutableLiveData<FavMovieEntry> movie;
@@ -26,12 +28,13 @@ public class DetailViewModel extends AndroidViewModel {
         super(app);
         this.movie = new MutableLiveData<>();
         this.movie.setValue(movie);
-        /*isFav = new MutableLiveData<>();
-        isFav.postValue(isMovieFavorite());*/
+        isFav = new MutableLiveData<>();
+        isFav.postValue(isMovieFavorite());
     }
 
     private boolean isMovieFavorite(){
+        int id = Objects.requireNonNull(movie.getValue()).getId();
         return FavMovieDatabase.getInstance(getApplication()).favMovieDao()
-                .countMovieById(movie.getValue().getId()) > 0;
+                .countMovieById(id) > 0;
     }
 }
