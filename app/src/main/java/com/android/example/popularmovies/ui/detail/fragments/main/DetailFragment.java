@@ -1,15 +1,12 @@
-package com.android.example.popularmovies.ui.detail.fragments;
+package com.android.example.popularmovies.ui.detail.fragments.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.example.popularmovies.R;
@@ -17,16 +14,22 @@ import com.android.example.popularmovies.database.FavMovieEntry;
 import com.android.example.popularmovies.databinding.FragmentDetailBinding;
 import com.android.example.popularmovies.ui.detail.DetailViewModel;
 import com.android.example.popularmovies.ui.detail.DetailViewModelFactory;
-import com.android.example.popularmovies.utils.json.JsonUtils;
+import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-
-public class DetailFragment extends Fragment {
+public class DetailFragment extends BaseDetailFragment {
 
     private FragmentDetailBinding binding;
     private DetailViewModel viewModel;
 
+    public static DetailFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -40,24 +43,8 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Create Viewmodel
-        Intent intent = requireActivity().getIntent();
-        if (intent.hasExtra(JsonUtils.TITLE)){
-            FavMovieEntry movie;
-            try {
-                movie = new FavMovieEntry(
-                        intent.getIntExtra(JsonUtils.MOVIE_ID, -1),
-                        intent.getStringExtra(JsonUtils.TITLE),
-                        intent.getStringExtra(JsonUtils.OVERVIEW),
-                        intent.getDoubleExtra(JsonUtils.VOTE_AVERAGE, 0.0),
-                        intent.getStringExtra(JsonUtils.POSTER_PATH),
-                        intent.getStringExtra(JsonUtils.RELEASE_DATE)
-                );
-            } catch (ParseException e) {
-                Log.e(getClass().getSimpleName(), "Could not parse date passed by API", e);
-                requireActivity().finish();
-                return;
-            }
-
+        FavMovieEntry movie = getMovie();
+        if (movie != null){
             viewModel = new ViewModelProvider(requireActivity(), DetailViewModelFactory
                     .getInstance(requireActivity().getApplication(), movie))
                     .get(DetailViewModel.class);

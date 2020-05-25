@@ -9,4 +9,6 @@
     <string name="title_activity_detail">Movie Details</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="reviews_header">Reviews</string>
+    <string name="videos_header">Videos</string>
 </resources>
