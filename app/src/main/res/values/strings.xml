@@ -6,4 +6,7 @@
     <string name="detail_desc">Poster for movie</string>
     <string name="rating_detail">User rating: %.1f</string>
     <string name="date_detail">Released %tD</string>
+    <string name="title_activity_detail">Movie Details</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
