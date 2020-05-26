@@ -37,4 +37,20 @@ public class DetailViewModel extends AndroidViewModel {
         return FavMovieDatabase.getInstance(getApplication()).favMovieDao()
                 .countMovieById(id) > 0;
     }
+
+    public void addToFavs(){
+        if (!isFav.getValue()){
+            FavMovieDatabase.getInstance(getApplication()).favMovieDao()
+                    .addMovieToFavorites(movie.getValue());
+            isFav.postValue(true);
+        }
+    }
+
+    public void removeFromFavs(){
+        if (isFav.getValue()){
+            FavMovieDatabase.getInstance(getApplication()).favMovieDao()
+                    .removeMovieFromFavorites(movie.getValue());
+            isFav.postValue(false);
+        }
+    }
 }

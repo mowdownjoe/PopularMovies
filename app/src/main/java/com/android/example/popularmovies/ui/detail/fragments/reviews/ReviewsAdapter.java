@@ -25,6 +25,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     private ReviewOnClickListener onClickListener;
 
+    public ReviewsAdapter(ReviewOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,7 +63,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            ReviewListItemBinding.bind(itemView);
+            binding = ReviewListItemBinding.bind(itemView);
             itemView.setOnClickListener(this);
         }
 

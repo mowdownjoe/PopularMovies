@@ -25,6 +25,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
 
     private VideoOnClickListener onClickListener;
 
+    public VideosAdapter(VideoOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     @NonNull
     @Override
     public VideosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,7 +63,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
 
         public VideosViewHolder(@NonNull View itemView) {
             super(itemView);
-            VideoListItemBinding.bind(itemView);
+            binding = VideoListItemBinding.bind(itemView);
             itemView.setOnClickListener(this);
         }
 

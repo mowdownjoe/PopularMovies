@@ -1,5 +1,9 @@
 package com.android.example.popularmovies.ui.detail.fragments.reviews;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,6 +17,7 @@ public class ReviewsViewModel extends ViewModel {
 
     private MutableLiveData<LoadingStatus> status;
     private MutableLiveData<List<MovieReview>> reviews;
+    private static FetchReviewsTask fetchReviewsTask;
 
     public LiveData<LoadingStatus> getLoadingStatus(){
         return status;
@@ -29,9 +34,47 @@ public class ReviewsViewModel extends ViewModel {
         status.postValue(LoadingStatus.INIT);
     }
 
+    void fetchReviews(@NonNull String apiKey, int movieId){
+        if (fetchReviewsTask != null){
+            fetchReviewsTask.cancel(true);
+        }
+        fetchReviewsTask = new FetchReviewsTask();
+        fetchReviewsTask.execute(apiKey, Integer.toString(movieId));
+    }
+
     @Override
     protected void onCleared() {
+        if (fetchReviewsTask != null) {
+            fetchReviewsTask.cancel(true);
+        }
         super.onCleared();
     }
-    // TODO: Implement the ViewModel
+
+    @SuppressLint("StaticFieldLeak")
+    private class FetchReviewsTask extends AsyncTask<String, Void, List<MovieReview>>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            status.postValue(LoadingStatus.LOADING);
+        }
+
+        @Override
+        protected List<MovieReview> doInBackground(String... strings) {
+            //TODO Fetch reviews
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<MovieReview> movieReviews) {
+            super.onPostExecute(movieReviews);
+
+            if (movieReviews != null){
+                reviews.postValue(movieReviews);
+                status.postValue(LoadingStatus.DONE);
+            } else {
+                status.postValue(LoadingStatus.ERROR);
+            }
+        }
+    }
 }

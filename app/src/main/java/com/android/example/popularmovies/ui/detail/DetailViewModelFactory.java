@@ -28,8 +28,8 @@ public class DetailViewModelFactory extends ViewModelProvider.AndroidViewModelFa
     }
 
     public static DetailViewModelFactory getInstance(Application app, @NonNull FavMovieEntry movieEntry){
-        if (sInstance == null){
-            synchronized (LOCK){
+        if (sInstance == null || !sInstance.mMovieEntry.equals(movieEntry)){
+            synchronized (LOCK) {
                 sInstance = new DetailViewModelFactory(app, movieEntry);
             }
         }

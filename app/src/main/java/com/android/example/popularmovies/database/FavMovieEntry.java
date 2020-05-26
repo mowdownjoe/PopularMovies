@@ -12,6 +12,7 @@ import com.android.example.popularmovies.utils.json.JsonUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(tableName = "movies")
 public class FavMovieEntry {
@@ -98,5 +99,23 @@ public class FavMovieEntry {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FavMovieEntry that = (FavMovieEntry) o;
+        return id == that.id &&
+                Double.compare(that.userRating, userRating) == 0 &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(posterUrl, that.posterUrl) &&
+                Objects.equals(releaseDate, that.releaseDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, userRating, posterUrl, releaseDate);
     }
 }

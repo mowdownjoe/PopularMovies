@@ -11,4 +11,7 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="reviews_header">Reviews</string>
     <string name="videos_header">Videos</string>
+    <string name="tab_header_details">Details</string>
+    <string name="tab_header_reviews">Reviews</string>
+    <string name="tab_header_videos">Videos</string>
 </resources>

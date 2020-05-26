@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
-import com.android.example.popularmovies.utils.MovieJsonException;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -57,11 +56,18 @@ public class JsonUtils {
             if (reviewsObject.has(RESULTS)){
                 return reviewsObject.getJSONArray(RESULTS);
             }
+        } else if (movieData.has(RESULTS)){
+            return movieData.getJSONArray(RESULTS);
+        } else if (movieData.has(ERROR_STATUS)) {
+            int errorCode = movieData.getInt(ERROR_STATUS);
+            String errorMessage = movieData.getString(ERROR_MESSAGE);
+            Log.e("JsonUtils.getResults", "HTTP error " + errorCode + ": " + errorMessage);
+            return null;
         }
         throw new MovieJsonException("No reviews found for movie.");
     }
 
-    public static List<MovieReview> getMovieReviews(JSONArray reviewJson) throws JSONException, IOException {
+    public static List<MovieReview> parseMovieReviewsJson(JSONArray reviewJson) throws JSONException, IOException {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<MovieReview> adapter = moshi.adapter(MovieReview.class);
         LinkedList<MovieReview> reviews = new LinkedList<>();
@@ -77,11 +83,18 @@ public class JsonUtils {
             if (videoObject.has(RESULTS)){
                 return videoObject.getJSONArray(VIDEOS);
             }
+        } else if (movieData.has(RESULTS)){
+            return movieData.getJSONArray(RESULTS);
+        } else if (movieData.has(ERROR_STATUS)) {
+            int errorCode = movieData.getInt(ERROR_STATUS);
+            String errorMessage = movieData.getString(ERROR_MESSAGE);
+            Log.e("JsonUtils.getResults", "HTTP error " + errorCode + ": " + errorMessage);
+            return null;
         }
         throw new MovieJsonException("No videos found for movie.");
     }
 
-    public static List<MovieVideo> getMovieTrailers(JSONArray videoJson) throws JSONException, IOException {
+    public static List<MovieVideo> parseMovieTrailersJson(JSONArray videoJson) throws JSONException, IOException {
         Moshi moshi = new Moshi.Builder().add(new MovieVideo.VideoAdapter()).build();
         JsonAdapter<MovieVideo> adapter = moshi.adapter(MovieVideo.class);
         LinkedList<MovieVideo> videos = new LinkedList<>();

@@ -1,4 +1,4 @@
-package com.android.example.popularmovies.utils;
+package com.android.example.popularmovies.utils.json;
 
 public class MovieJsonException extends RuntimeException {
 

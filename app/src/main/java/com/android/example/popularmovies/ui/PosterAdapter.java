@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.utils.MovieJsonException;
 import com.android.example.popularmovies.utils.json.JsonUtils;
+import com.android.example.popularmovies.utils.json.MovieJsonException;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

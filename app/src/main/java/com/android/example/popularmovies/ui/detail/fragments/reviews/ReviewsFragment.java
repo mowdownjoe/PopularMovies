@@ -1,5 +1,6 @@
 package com.android.example.popularmovies.ui.detail.fragments.reviews;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.example.popularmovies.databinding.ReviewsFragmentBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
+import com.android.example.popularmovies.utils.json.MovieReview;
 
-public class ReviewsFragment extends BaseDetailFragment {
+public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapter.ReviewOnClickListener {
 
     private ReviewsViewModel reviewsViewModel;
     private ReviewsFragmentBinding binding;
@@ -51,6 +53,14 @@ public class ReviewsFragment extends BaseDetailFragment {
                     break;
             }
         });
+
     }
 
+    @Override
+    public void onListItemClick(MovieReview review) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, review.getUrlAsUri());
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.android.example.popularmovies.ui.detail.fragments.videos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.example.popularmovies.databinding.VideosFragmentBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
+import com.android.example.popularmovies.utils.json.MovieVideo;
 
-public class VideosFragment extends BaseDetailFragment {
+public class VideosFragment extends BaseDetailFragment implements VideosAdapter.VideoOnClickListener {
 
     private VideosViewModel videosViewModel;
     private VideosFragmentBinding binding;
@@ -58,4 +60,11 @@ public class VideosFragment extends BaseDetailFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onListItemClick(MovieVideo video) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, video.getVideoUri());
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }

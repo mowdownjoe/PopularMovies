@@ -10,9 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.example.popularmovies.LoadingStatus;
-import com.android.example.popularmovies.utils.MovieJsonException;
-import com.android.example.popularmovies.utils.NetworkUtils;
 import com.android.example.popularmovies.utils.json.JsonUtils;
+import com.android.example.popularmovies.utils.json.MovieJsonException;
+import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,18 +71,6 @@ public class MainViewModel extends ViewModel {
         }
 
         @Override
-        protected void onPostExecute(JSONArray jsonArray) {
-            super.onPostExecute(jsonArray);
-
-            if (jsonArray != null) {
-                movieData.postValue(jsonArray);
-                status.postValue(LoadingStatus.DONE);
-            } else {
-                status.postValue(LoadingStatus.ERROR);
-            }
-        }
-
-        @Override
         protected JSONArray doInBackground(String... params) {
             if (params.length != 2) {
                 return null;
@@ -101,6 +89,18 @@ public class MainViewModel extends ViewModel {
             } catch (IOException | JSONException | MovieJsonException e) {
                 Log.e("FetchMovieTask", "Error caught while fetching and parsing JSON", e);
                 return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            super.onPostExecute(jsonArray);
+
+            if (jsonArray != null) {
+                movieData.postValue(jsonArray);
+                status.postValue(LoadingStatus.DONE);
+            } else {
+                status.postValue(LoadingStatus.ERROR);
             }
         }
     }
