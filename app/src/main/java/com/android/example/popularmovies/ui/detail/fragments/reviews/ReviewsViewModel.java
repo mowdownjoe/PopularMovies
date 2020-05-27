@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.utils.json.MovieReview;
+import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ReviewsViewModel extends ViewModel {
     private MutableLiveData<List<MovieReview>> reviews;
     private static FetchReviewsTask fetchReviewsTask;
 
-    public LiveData<LoadingStatus> getLoadingStatus(){
+    LiveData<LoadingStatus> getLoadingStatus(){
         return status;
     }
 
@@ -34,20 +35,20 @@ public class ReviewsViewModel extends ViewModel {
         status.postValue(LoadingStatus.INIT);
     }
 
-    void fetchReviews(@NonNull String apiKey, int movieId){
-        if (fetchReviewsTask != null){
-            fetchReviewsTask.cancel(true);
-        }
-        fetchReviewsTask = new FetchReviewsTask();
-        fetchReviewsTask.execute(apiKey, Integer.toString(movieId));
-    }
-
     @Override
     protected void onCleared() {
         if (fetchReviewsTask != null) {
             fetchReviewsTask.cancel(true);
         }
         super.onCleared();
+    }
+
+    void fetchReviews(@NonNull String apiKey, int movieId){
+        if (fetchReviewsTask != null){
+            fetchReviewsTask.cancel(true);
+        }
+        fetchReviewsTask = new FetchReviewsTask();
+        fetchReviewsTask.execute(apiKey, Integer.toString(movieId));
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -60,9 +61,15 @@ public class ReviewsViewModel extends ViewModel {
         }
 
         @Override
-        protected List<MovieReview> doInBackground(String... strings) {
-            //TODO Fetch reviews
-            return null;
+        protected List<MovieReview> doInBackground(String... params) {
+            if (params.length != 2){
+                return null;
+            }
+
+            String apiKey = params[0];
+            int movieId = Integer.parseInt(params[1]);
+
+            return NetworkUtils.getMovieReviews(movieId, apiKey);
         }
 
         @Override

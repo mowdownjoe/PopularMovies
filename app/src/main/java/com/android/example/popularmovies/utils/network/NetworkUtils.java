@@ -47,7 +47,7 @@ public class NetworkUtils {
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null) {
                 return new JSONObject(response.body().string());
-            } else if (response.code() <= 400) {
+            } else if (response.code() >= 400) {
                 throw new OkHttpException(response);
             } else {
                 Log.w(TAG_GET_MOVIES, "Response from Movie Database is null.");
@@ -79,7 +79,7 @@ public class NetworkUtils {
             if (response.code() == 200 && response.body() != null){
                 JSONArray videosJson = JsonUtils.getMovieTrailers(new JSONObject(response.body().string()));
                 return JsonUtils.parseMovieTrailersJson(videosJson);
-            } else if (response.code() <= 400) {
+            } else if (response.code() >= 400) {
                 throw new OkHttpException(response);
             } else {
                 return null;
@@ -90,6 +90,8 @@ public class NetworkUtils {
         }
     }
 
+    @WorkerThread
+    @Nullable
     public static List<MovieReview> getMovieReviews(int movieId, String apiKey){
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
@@ -100,9 +102,9 @@ public class NetworkUtils {
                     .build();
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null){
-                JSONArray reviewsJson = JsonUtils.getMovieTrailers(new JSONObject(response.body().string()));
+                JSONArray reviewsJson = JsonUtils.getMovieReviews(new JSONObject(response.body().string()));
                 return JsonUtils.parseMovieReviewsJson(reviewsJson);
-            } else if (response.code() <= 400) {
+            } else if (response.code() >= 400) {
                 throw new OkHttpException(response);
             } else {
                 return null;

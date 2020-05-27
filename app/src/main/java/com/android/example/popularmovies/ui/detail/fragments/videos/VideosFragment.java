@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.example.popularmovies.databinding.VideosFragmentBinding;
+import com.android.example.popularmovies.databinding.FragmentVideosBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieVideo;
 
 public class VideosFragment extends BaseDetailFragment implements VideosAdapter.VideoOnClickListener {
 
     private VideosViewModel videosViewModel;
-    private VideosFragmentBinding binding;
+    private FragmentVideosBinding binding;
 
     public static VideosFragment newInstance() {
         return new VideosFragment();
@@ -26,7 +26,7 @@ public class VideosFragment extends BaseDetailFragment implements VideosAdapter.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = VideosFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentVideosBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

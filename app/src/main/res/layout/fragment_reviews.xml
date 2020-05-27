@@ -23,7 +23,7 @@
         android:visibility="invisible"/>
 
     <LinearLayout
-        android:id="@+id/ll_video_layout"
+        android:id="@+id/ll_review_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -32,16 +32,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/videos_header"
+            android:background="@color/secondaryColor"
+            android:text="@string/reviews_header"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/secondaryTextColor" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_video_list"
+            android:id="@+id/rv_review_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/video_list_item" />
+            tools:listitem="@layout/review_list_item" />
     </LinearLayout>
 
 </FrameLayout>

@@ -57,20 +57,33 @@
         android:name="com.android.example.popularmovies.ui.detail.fragments.videos.VideosFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:layout="@layout/videos_fragment"
+        tools:layout="@layout/fragment_videos"
         app:layout_constraintBottom_toTopOf="@+id/vertical_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/horizontal_guideline"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <fragment
-        android:id="@+id/fragment3"
+        android:id="@+id/review_fragment"
         android:name="com.android.example.popularmovies.ui.detail.fragments.reviews.ReviewsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:layout="@layout/reviews_fragment"
+        tools:layout="@layout/fragment_reviews"
         app:layout_constraintTop_toBottomOf="@id/vertical_guideline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/app_name"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        android:textColor="@android:color/white"
+        android:minHeight="?actionBarSize"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

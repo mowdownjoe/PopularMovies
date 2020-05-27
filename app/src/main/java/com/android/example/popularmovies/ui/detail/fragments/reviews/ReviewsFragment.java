@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.example.popularmovies.databinding.ReviewsFragmentBinding;
+import com.android.example.popularmovies.databinding.FragmentReviewsBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieReview;
 
 public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapter.ReviewOnClickListener {
 
     private ReviewsViewModel reviewsViewModel;
-    private ReviewsFragmentBinding binding;
+    private FragmentReviewsBinding binding;
 
     public static ReviewsFragment newInstance() {
         return new ReviewsFragment();
@@ -26,7 +26,7 @@ public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapte
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = ReviewsFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentReviewsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
