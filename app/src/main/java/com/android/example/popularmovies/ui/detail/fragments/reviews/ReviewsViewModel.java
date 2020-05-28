@@ -20,8 +20,12 @@ public class ReviewsViewModel extends ViewModel {
     private MutableLiveData<List<MovieReview>> reviews;
     private static FetchReviewsTask fetchReviewsTask;
 
-    LiveData<LoadingStatus> getLoadingStatus(){
+    LiveData<LoadingStatus> getStatus(){
         return status;
+    }
+
+    void setStatus(LoadingStatus newStatus) {
+        status.postValue(newStatus);
     }
 
     public LiveData<List<MovieReview>> getReviews(){
@@ -62,6 +66,8 @@ public class ReviewsViewModel extends ViewModel {
 
         @Override
         protected List<MovieReview> doInBackground(String... params) {
+            //TODO Debug why reviews aren't loading
+
             if (params.length != 2){
                 return null;
             }

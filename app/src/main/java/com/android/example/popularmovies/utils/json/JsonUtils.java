@@ -8,16 +8,20 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.example.popularmovies.database.FavMovieEntry;
 import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,6 +52,16 @@ public class JsonUtils {
         } else {
             throw new MovieJsonException("Unusual error detected.");
         }
+    }
+
+    public static List<FavMovieEntry> parseMovieJson(@NonNull JSONArray moviesJson) throws JSONException, IOException {
+        Moshi moshi = new Moshi.Builder().add(Date.class, new Rfc3339DateJsonAdapter()).build();
+        JsonAdapter<FavMovieEntry> adapter = moshi.adapter(FavMovieEntry.class);
+        ArrayList<FavMovieEntry> movies = new ArrayList<>();
+        for (int i = 0; i < moviesJson.length(); i++) {
+            movies.add(adapter.fromJson(moviesJson.getJSONObject(i).toString()));
+        }
+        return movies;
     }
 
     public static JSONArray getMovieReviews(@NonNull JSONObject movieData) throws JSONException {

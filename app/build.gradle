@@ -34,6 +34,7 @@ android {
 dependencies {
     def lifecycle_version = '2.2.0'
     def room_version = '2.2.5'
+    def moshi_version = '1.9.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -66,7 +67,6 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     //Moshi for JSON
-    implementation 'com.squareup.moshi:moshi:1.9.2'
-
-
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
 }

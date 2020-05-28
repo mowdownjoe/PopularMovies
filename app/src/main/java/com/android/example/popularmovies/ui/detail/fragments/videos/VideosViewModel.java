@@ -24,6 +24,8 @@ public class VideosViewModel extends ViewModel {
         return status;
     }
 
+    void setStatus(LoadingStatus newStatus) { status.postValue(newStatus); }
+
     public LiveData<List<MovieVideo>> getVideos(){
         return videos;
     }
@@ -62,6 +64,8 @@ public class VideosViewModel extends ViewModel {
 
         @Override
         protected List<MovieVideo> doInBackground(String... params) {
+            //TODO Debug why videos aren't loading
+
             if (params.length != 2){
                 return null;
             }

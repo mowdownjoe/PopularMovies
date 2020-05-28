@@ -8,6 +8,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.android.example.popularmovies.utils.json.JsonUtils;
+import com.squareup.moshi.Json;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,12 +22,16 @@ public class FavMovieEntry {
     private int id;
     private String title;
     @ColumnInfo(name = JsonUtils.OVERVIEW)
+    @Json(name = JsonUtils.OVERVIEW)
     private String description;
     @ColumnInfo(name = JsonUtils.VOTE_AVERAGE)
+    @Json(name = JsonUtils.VOTE_AVERAGE)
     private double userRating;
     @ColumnInfo(name = JsonUtils.POSTER_PATH)
+    @Json(name = JsonUtils.POSTER_PATH)
     private String posterUrl;
     @ColumnInfo(name = JsonUtils.RELEASE_DATE)
+    @Json(name = JsonUtils.RELEASE_DATE)
     private Date releaseDate;
 
     public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,

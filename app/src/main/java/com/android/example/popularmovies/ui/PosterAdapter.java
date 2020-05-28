@@ -22,6 +22,8 @@ import org.json.JSONObject;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
 
+    //TODO Refactor to use FavMovieClass instead of raw JSON
+
     @Nullable
     private JSONArray movieData;
     private PosterOnClickListener onClickListener;

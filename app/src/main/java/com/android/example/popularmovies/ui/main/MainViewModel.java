@@ -46,7 +46,7 @@ public class MainViewModel extends ViewModel {
         fetchMoviesTask.execute(apiKey, sortOrder);
     }
 
-    MainViewModel() {
+    public MainViewModel() {
         super();
         status = new MutableLiveData<>();
         movieData = new MutableLiveData<>();

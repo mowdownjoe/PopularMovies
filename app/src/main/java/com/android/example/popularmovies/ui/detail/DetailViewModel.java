@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.example.popularmovies.AppExecutors;
 import com.android.example.popularmovies.database.FavMovieDatabase;
 import com.android.example.popularmovies.database.FavMovieEntry;
 
@@ -29,7 +30,7 @@ public class DetailViewModel extends AndroidViewModel {
         this.movie = new MutableLiveData<>();
         this.movie.setValue(movie);
         isFav = new MutableLiveData<>();
-        isFav.postValue(isMovieFavorite());
+        initializeIsFav();
     }
 
     private boolean isMovieFavorite(){
@@ -38,19 +39,31 @@ public class DetailViewModel extends AndroidViewModel {
                 .countMovieById(id) > 0;
     }
 
-    public void addToFavs(){
-        if (!isFav.getValue()){
-            FavMovieDatabase.getInstance(getApplication()).favMovieDao()
-                    .addMovieToFavorites(movie.getValue());
-            isFav.postValue(true);
+    private void initializeIsFav(){
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            int id = Objects.requireNonNull(movie.getValue()).getId();
+            isFav.postValue(FavMovieDatabase.getInstance(getApplication()).favMovieDao()
+                    .countMovieById(id) > 0);
+        });
+    }
+
+    public synchronized void addToFavs(){
+        if (isFav.getValue() != null && !isFav.getValue()){
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                FavMovieDatabase.getInstance(getApplication()).favMovieDao()
+                        .addMovieToFavorites(movie.getValue());
+                isFav.postValue(true);
+            });
         }
     }
 
-    public void removeFromFavs(){
-        if (isFav.getValue()){
-            FavMovieDatabase.getInstance(getApplication()).favMovieDao()
-                    .removeMovieFromFavorites(movie.getValue());
-            isFav.postValue(false);
+    public synchronized void removeFromFavs(){
+        if (isFav.getValue() != null && isFav.getValue()){
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                FavMovieDatabase.getInstance(getApplication()).favMovieDao()
+                        .removeMovieFromFavorites(movie.getValue());
+                isFav.postValue(false);
+            });
         }
     }
 }
