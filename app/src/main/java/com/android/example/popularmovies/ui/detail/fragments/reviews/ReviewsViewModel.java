@@ -48,7 +48,7 @@ public class ReviewsViewModel extends ViewModel {
     }
 
     void fetchReviews(@NonNull String apiKey, int movieId){
-        if (fetchReviewsTask != null){
+        if (fetchReviewsTask != null){ //TODO Switch to AppExecutor?
             fetchReviewsTask.cancel(true);
         }
         fetchReviewsTask = new FetchReviewsTask();

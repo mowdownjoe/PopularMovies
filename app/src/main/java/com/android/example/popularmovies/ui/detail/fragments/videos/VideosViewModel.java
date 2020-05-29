@@ -46,7 +46,7 @@ public class VideosViewModel extends ViewModel {
     }
 
     void fetchVideos(@NonNull String apiKey, int movieId){
-        if (fetchVideosTask != null){
+        if (fetchVideosTask != null){ //TODO Switch to AppExecutor?
             fetchVideosTask.cancel(true);
         }
         fetchVideosTask = new FetchVideosTask();

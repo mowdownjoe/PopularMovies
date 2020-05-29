@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    def truth_version = '1.0.1'
     def lifecycle_version = '2.2.0'
     def room_version = '2.2.5'
     def moshi_version = '1.9.2'
@@ -69,4 +70,11 @@ dependencies {
     //Moshi for JSON
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+
+    //Automated Unit Testing libraries
+    testImplementation "com.google.truth:truth:$truth_version"
+    testImplementation "com.google.truth.extensions:truth-java8-extension:$truth_version"
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'org.json:json:20200518'
 }

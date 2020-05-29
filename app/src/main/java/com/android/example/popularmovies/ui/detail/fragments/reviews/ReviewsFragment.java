@@ -76,7 +76,7 @@ public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapte
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FavMovieEntry movie = getMovie();
+        FavMovieEntry movie = getMovie(); //TODO: Move to onViewCreated?
         if (movie != null) {
             viewModel.fetchReviews(getString(R.string.api_key_v3), movie.getId());
         } else {
