@@ -22,6 +22,18 @@ public class MovieVideo {
     private String site;
     private String isoIdentifier;
 
+    public MovieVideo(){
+    }
+
+    public MovieVideo(String id, String name, String key, int size, String type, String site, String isoIdentifier) {
+        this.id = id;
+        this.name = name;
+        this.key = key;
+        this.size = size;
+        this.type = type;
+        this.site = site;
+        this.isoIdentifier = isoIdentifier;
+    }
 
 
     public String getId() {
@@ -42,6 +54,25 @@ public class MovieVideo {
 
     public String getKey() {
         return key;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieVideo that = (MovieVideo) o;
+        return size == that.size &&
+                id.equals(that.id) &&
+                name.equals(that.name) &&
+                key.equals(that.key) &&
+                type.equals(that.type) &&
+                site.equals(that.site) &&
+                isoIdentifier.equals(that.isoIdentifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, key, size, type, site, isoIdentifier);
     }
 
     public void setKey(String key) {

@@ -2,6 +2,8 @@ package com.android.example.popularmovies.utils.json;
 
 import android.net.Uri;
 
+import java.util.Objects;
+
 public class MovieReview {
 
     private String author;
@@ -52,5 +54,21 @@ public class MovieReview {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieReview that = (MovieReview) o;
+        return author.equals(that.author) &&
+                content.equals(that.content) &&
+                id.equals(that.id) &&
+                url.equals(that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, content, id, url);
     }
 }

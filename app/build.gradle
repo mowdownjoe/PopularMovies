@@ -32,10 +32,12 @@ android {
 }
 
 dependencies {
-    def truth_version = '1.0.1'
-    def lifecycle_version = '2.2.0'
-    def room_version = '2.2.5'
-    def moshi_version = '1.9.2'
+    final def junitAndroidXExtensionVersion = '1.1.1'
+    final def truth_version = '1.0.1'
+    final def lifecycle_version = '2.2.0'
+    final def androidXTestVersion = '1.2.0'
+    final def room_version = '2.2.5'
+    final def moshi_version = '1.9.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -46,9 +48,6 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.squareup.okhttp3:okhttp:3.14.8'
@@ -60,7 +59,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     //Room for DB
     annotationProcessor "androidx.room:room-compiler:$room_version"
@@ -71,10 +69,21 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
 
+    //Library included in base Android, but not in Unit Testing environment
+    testImplementation 'org.json:json:20200518'
+
     //Automated Unit Testing libraries
     testImplementation "com.google.truth:truth:$truth_version"
     testImplementation "com.google.truth.extensions:truth-java8-extension:$truth_version"
-    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation "androidx.test:core:$androidXTestVersion"
     testImplementation 'org.mockito:mockito-all:1.10.19'
-    testImplementation 'org.json:json:20200518'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test.ext:truth:1.2.0'
+    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation "androidx.test.ext:junit:$junitAndroidXExtensionVersion"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //Instrumented Testing Libraries
+    androidTestImplementation "androidx.test.ext:junit:$junitAndroidXExtensionVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
