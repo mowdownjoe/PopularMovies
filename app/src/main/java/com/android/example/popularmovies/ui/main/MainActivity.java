@@ -9,12 +9,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
-import com.android.example.popularmovies.ui.PosterAdapter;
 import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.android.example.popularmovies.utils.json.MovieJsonException;
 import com.android.example.popularmovies.utils.network.LoadingStatus;
@@ -39,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
 
         binding.rvMoviePosterGrid.setHasFixedSize(true);
 
-        //TODO Set spanCount based on orientation and shortest width.
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
+        GridAutofitLayoutManager layoutManager =
+                new GridAutofitLayoutManager(this, 490, LinearLayoutManager.VERTICAL, false);
         binding.rvMoviePosterGrid.setLayoutManager(layoutManager);
 
         adapter = new PosterAdapter(this);

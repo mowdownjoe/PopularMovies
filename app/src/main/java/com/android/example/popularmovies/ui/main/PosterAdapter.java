@@ -1,4 +1,4 @@
-package com.android.example.popularmovies.ui;
+package com.android.example.popularmovies.ui.main;
 
 import android.net.Uri;
 import android.util.Log;

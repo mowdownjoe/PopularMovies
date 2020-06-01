@@ -1,12 +1,14 @@
 package com.android.example.popularmovies.database;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.squareup.moshi.Json;
 
@@ -122,5 +124,13 @@ public class FavMovieEntry {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, description, userRating, posterUrl, releaseDate);
+    }
+
+    public Uri getPosterUri(PosterSizes size){
+        if (size == PosterSizes.ORIGINAL){
+            return Uri.parse(JsonUtils.BASE_POSTER_PATH + "original" + posterUrl);
+        } else {
+            return Uri.parse(JsonUtils.BASE_POSTER_PATH + 'w' + size.size + posterUrl);
+        }
     }
 }

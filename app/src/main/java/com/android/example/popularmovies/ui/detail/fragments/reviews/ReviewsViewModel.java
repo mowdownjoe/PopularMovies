@@ -67,8 +67,6 @@ public class ReviewsViewModel extends ViewModel {
 
         @Override
         protected List<MovieReview> doInBackground(String... params) {
-            //TODO Debug why reviews aren't loading
-
             if (params.length != 2){
                 return null;
             }

@@ -46,6 +46,10 @@ public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapte
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Context is not defined until onViewCreated, so we store the context here.
+        adapter.setupMarkdownParsing(requireContext());
+
         viewModel = new ViewModelProvider(this).get(ReviewsViewModel.class);
         viewModel.getStatus().observe(getViewLifecycleOwner(), status -> {
             switch (status){
@@ -76,7 +80,7 @@ public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapte
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FavMovieEntry movie = getMovie(); //TODO: Move to onViewCreated?
+        FavMovieEntry movie = getMovie();
         if (movie != null) {
             viewModel.fetchReviews(getString(R.string.api_key_v3), movie.getId());
         } else {

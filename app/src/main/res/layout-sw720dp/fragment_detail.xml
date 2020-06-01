@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars"
+            tools:srcCompat="@drawable/error_poster"
             android:padding="8dp"
             android:contentDescription="@string/detail_desc" />
 
@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_poster_thumbnail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_rating"
             tools:text="@string/lorem_ipsum_test" />

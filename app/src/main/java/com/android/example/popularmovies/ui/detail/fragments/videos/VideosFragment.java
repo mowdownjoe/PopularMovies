@@ -76,7 +76,7 @@ public class VideosFragment extends BaseDetailFragment implements VideosAdapter.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FavMovieEntry movie = getMovie(); //TODO: Move to onViewCreated?
+        FavMovieEntry movie = getMovie();
         if (movie != null) {
             viewModel.fetchVideos(getString(R.string.api_key_v3), movie.getId());
         } else {

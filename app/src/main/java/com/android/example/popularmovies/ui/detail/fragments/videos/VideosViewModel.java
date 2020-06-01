@@ -64,8 +64,6 @@ public class VideosViewModel extends ViewModel {
 
         @Override
         protected List<MovieVideo> doInBackground(String... params) {
-            //TODO Debug why videos aren't loading
-
             if (params.length != 2){
                 return null;
             }

@@ -1,5 +1,6 @@
 package com.android.example.popularmovies.ui.detail.fragments.reviews;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,14 @@ import com.android.example.popularmovies.utils.json.MovieReview;
 
 import java.util.List;
 
+import io.noties.markwon.Markwon;
+
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
 
     @Nullable
     private List<MovieReview> mReviews;
+    private Context context;
+    private Markwon markwon;
 
     public interface ReviewOnClickListener{
         void onListItemClick(MovieReview review);
@@ -27,6 +32,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     public ReviewsAdapter(ReviewOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+        context = null;
+    }
+
+    public ReviewsAdapter(Context c, ReviewOnClickListener listener){
+        onClickListener = listener;
+        context = c;
+        markwon = Markwon.create(c);
     }
 
     @NonNull
@@ -58,6 +70,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         notifyDataSetChanged();
     }
 
+    public void setupMarkdownParsing(Context c){
+        if (context == null || !context.equals(c)){
+            context = c;
+        }
+        markwon = Markwon.create(context);
+    }
+
     class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ReviewListItemBinding binding;
@@ -70,7 +89,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
         void bind(MovieReview review){
             binding.tvAuthor.setText(review.getAuthor());
-            binding.tvReview.setText(review.getContent());
+            markwon.setMarkdown(binding.tvReview, review.getContent());
         }
 
         @Override
