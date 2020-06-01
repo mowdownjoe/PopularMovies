@@ -55,6 +55,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
 
     public void setVideos(List<MovieVideo> videos){
         mVideos = videos;
+        notifyDataSetChanged();
     }
 
     class VideosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

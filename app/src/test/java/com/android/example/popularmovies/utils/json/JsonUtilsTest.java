@@ -1,7 +1,5 @@
 package com.android.example.popularmovies.utils.json;
 
-import com.google.common.truth.Truth;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,13 +9,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 
 public class JsonUtilsTest {
 
     @Test
-    public void parseMovieReviewsJson_oneEntry() {
+    public void parseMovieReviewsJson_OneEntry() {
         //GIVEN
         JSONArray testData = new JSONArray();
 
@@ -45,7 +44,7 @@ public class JsonUtilsTest {
         }
 
         //THEN
-        Truth.assertThat(exampleReviewList.get(0)).isEqualTo(expectedReview);
+        assertThat(exampleReviewList.get(0)).isEqualTo(expectedReview);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class JsonUtilsTest {
             return;
         }
 
-        Truth.assertThat(exampleReviewList).isEmpty();
+        assertThat(exampleReviewList).isEmpty();
     }
 
     @Test
@@ -110,9 +109,9 @@ public class JsonUtilsTest {
             List<MovieReview> outputReviewList = JsonUtils.parseMovieReviewsJson(array);
 
             //THEN
-            Truth.assertThat(outputReviewList).hasSize(2);
-            Truth.assertThat(outputReviewList.get(0).getAuthor()).matches("Goddard");
-            Truth.assertThat(outputReviewList.get(1).getAuthor()).startsWith("Brett");
+            assertThat(outputReviewList).hasSize(2);
+            assertThat(outputReviewList.get(0).getAuthor()).matches("Goddard");
+            assertThat(outputReviewList.get(1).getAuthor()).startsWith("Brett");
         } catch (JSONException | IOException e) {
             fail(e.getMessage());
         }
@@ -159,7 +158,8 @@ public class JsonUtilsTest {
         }
 
         //THEN
-        Truth.assertThat(exampleVideoList.get(0)).isEqualTo(expectedVideo);
+        assertThat(exampleVideoList.get(0)).isEqualTo(expectedVideo);
+        assertThat(exampleVideoList.get(0).getIsoIdentifier()).matches("en_US");
     }
 
     @Test
@@ -176,7 +176,7 @@ public class JsonUtilsTest {
             return;
         }
 
-        Truth.assertThat(exampleReviewList).isEmpty();
+        assertThat(exampleReviewList).isEmpty();
     }
 
     @Test
@@ -202,9 +202,9 @@ public class JsonUtilsTest {
             List<MovieVideo> outputVideoList = JsonUtils.parseMovieTrailersJson(array);
 
             //THEN
-            Truth.assertThat(outputVideoList).hasSize(2);
-            Truth.assertThat(outputVideoList.get(0).getName()).contains("Fight Club");
-            Truth.assertThat(outputVideoList.get(1).getName()).contains("Fight Club");
+            assertThat(outputVideoList).hasSize(2);
+            assertThat(outputVideoList.get(0).getName()).contains("Fight Club");
+            assertThat(outputVideoList.get(1).getName()).contains("Fight Club");
         } catch (JSONException | IOException e) {
             fail(e.getMessage());
         }

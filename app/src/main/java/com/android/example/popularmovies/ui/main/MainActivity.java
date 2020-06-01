@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
 import com.android.example.popularmovies.ui.PosterAdapter;
 import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.android.example.popularmovies.utils.json.MovieJsonException;
+import com.android.example.popularmovies.utils.network.LoadingStatus;
 import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 import org.json.JSONException;

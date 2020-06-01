@@ -55,6 +55,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     public void setReviews(List<MovieReview> reviews){
         mReviews = reviews;
+        notifyDataSetChanged();
     }
 
     class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

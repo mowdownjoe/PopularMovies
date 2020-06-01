@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.database.FavMovieEntry;
 import com.android.example.popularmovies.databinding.FragmentReviewsBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieReview;
+import com.android.example.popularmovies.utils.network.LoadingStatus;
 
 public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapter.ReviewOnClickListener {
 

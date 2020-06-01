@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.utils.json.MovieReview;
+import com.android.example.popularmovies.utils.network.LoadingStatus;
 import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 import java.util.List;
@@ -24,6 +24,7 @@ public class ReviewsViewModel extends ViewModel {
         return status;
     }
 
+    @SuppressWarnings("SameParameterValue")
     void setStatus(LoadingStatus newStatus) {
         status.postValue(newStatus);
     }

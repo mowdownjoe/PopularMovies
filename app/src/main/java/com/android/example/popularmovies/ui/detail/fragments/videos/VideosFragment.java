@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.android.example.popularmovies.LoadingStatus;
 import com.android.example.popularmovies.R;
 import com.android.example.popularmovies.database.FavMovieEntry;
 import com.android.example.popularmovies.databinding.FragmentVideosBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieVideo;
+import com.android.example.popularmovies.utils.network.LoadingStatus;
 
 public class VideosFragment extends BaseDetailFragment implements VideosAdapter.VideoOnClickListener {
 
