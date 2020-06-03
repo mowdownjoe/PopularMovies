@@ -6,15 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 
 public class DetailViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
-    private final FavMovieEntry mMovieEntry;
+    private final MovieEntry mMovieEntry;
     private final Application application;
     private static final Object LOCK = new Object();
     private static DetailViewModelFactory sInstance;
 
-    private DetailViewModelFactory(Application app, FavMovieEntry movieEntry){
+    private DetailViewModelFactory(Application app, MovieEntry movieEntry){
         super(app);
         application = app;
         mMovieEntry = movieEntry;
@@ -27,7 +27,7 @@ public class DetailViewModelFactory extends ViewModelProvider.AndroidViewModelFa
         return sInstance;
     }
 
-    public static DetailViewModelFactory getInstance(Application app, @NonNull FavMovieEntry movieEntry){
+    public static DetailViewModelFactory getInstance(Application app, @NonNull MovieEntry movieEntry){
         if (sInstance == null || !sInstance.mMovieEntry.equals(movieEntry)){
             synchronized (LOCK) {
                 sInstance = new DetailViewModelFactory(app, movieEntry);

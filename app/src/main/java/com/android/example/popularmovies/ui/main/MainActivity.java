@@ -1,7 +1,7 @@
 package com.android.example.popularmovies.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,17 +9,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.popularmovies.R;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
+import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.android.example.popularmovies.utils.json.JsonUtils;
-import com.android.example.popularmovies.utils.json.MovieJsonException;
 import com.android.example.popularmovies.utils.network.LoadingStatus;
 import com.android.example.popularmovies.utils.network.NetworkUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.PosterOnClickListener {
 
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setHasFixedSize(true);
 
         GridAutofitLayoutManager layoutManager =
-                new GridAutofitLayoutManager(this, 490, LinearLayoutManager.VERTICAL, false);
+                new GridAutofitLayoutManager(this, 490, RecyclerView.VERTICAL, false);
         binding.rvMoviePosterGrid.setLayoutManager(layoutManager);
 
         adapter = new PosterAdapter(this);
@@ -60,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
             }
         });
 
-        viewModel.getMovieData().observe(this, movieData -> {
-            if (movieData != null){
-                adapter.setMovieData(movieData);
+        viewModel.getMovieList().observe(this, movies -> {
+            if (movies != null){
+                adapter.setMovieData(movies);
             }
         });
 
@@ -99,13 +97,15 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     }
 
     @Override
-    public void onListItemClick(JSONObject movieData) {
-        Log.v("MainActivity", "Received click on list item.");
-        try {
-            startActivity(JsonUtils.buildMovieIntent(movieData, this));
-        } catch (JSONException | MovieJsonException e) {
-            e.printStackTrace();
-        }
+    public void onListItemClick(MovieEntry movie) {
+        Intent intent = new Intent(this, DetailActivity.class)
+                .putExtra(JsonUtils.TITLE, movie.getTitle())
+                .putExtra(JsonUtils.MOVIE_ID, movie.getId())
+                .putExtra(JsonUtils.POSTER_PATH, movie.getPosterUrl())
+                .putExtra(JsonUtils.OVERVIEW, movie.getDescription())
+                .putExtra(JsonUtils.VOTE_AVERAGE, movie.getUserRating())
+                .putExtra(JsonUtils.RELEASE_DATE, movie.getReleaseDate());
+        startActivity(intent);
     }
 
 }

@@ -12,32 +12,31 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.utils.json.JsonUtils;
-import com.android.example.popularmovies.utils.json.MovieJsonException;
+import com.android.example.popularmovies.database.MovieEntry;
+import com.android.example.popularmovies.ui.PosterSizes;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
 
-    //TODO Refactor to use FavMovieClass instead of raw JSON
+    //TODO Refactor to use List<MovieEntry> instead of raw JSON
+    //TODO Implement paging using androidx.paging library
 
     @Nullable
-    private JSONArray movieData;
+    private List<MovieEntry> movieList;
     private PosterOnClickListener onClickListener;
 
     public interface PosterOnClickListener{
-        void onListItemClick(JSONObject movieData);
+        void onListItemClick(MovieEntry movie);
     }
 
     public PosterAdapter(PosterOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void setMovieData(JSONArray movieData) {
-        this.movieData = movieData;
+    public void setMovieData(List<MovieEntry> movies){
+        movieList = movies;
         notifyDataSetChanged();
     }
 
@@ -52,19 +51,15 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
     @Override
     public void onBindViewHolder(@NonNull PosterViewHolder holder, int position) {
-        if (movieData != null) {
-            try {
-                holder.bind(JsonUtils.getPosterUri(movieData.getJSONObject(position)));
-            } catch (JSONException | MovieJsonException e) {
-                Log.e("PosterAdapter.onBind", "Error occurred during binding", e);
-            }
+        if (movieList != null) {
+            holder.bind(movieList.get(position).getPosterUri(PosterSizes.LARGE));
         }
     }
 
     @Override
     public int getItemCount() {
-        if (movieData != null) {
-            return movieData.length();
+        if (movieList != null) {
+            return movieList.size();
         } else {
             return 0;
         }
@@ -98,12 +93,8 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         @Override
         public void onClick(View v) {
             Log.v(TAG_ONCLICK, "Received click on item "+getAdapterPosition());
-            if (movieData != null) {
-                try {
-                    onClickListener.onListItemClick(movieData.getJSONObject(getAdapterPosition()));
-                } catch (JSONException e) {
-                    Log.e(TAG_ONCLICK, "Cannot find JSON Object in array", e);
-                }
+            if (movieList != null) {
+                onClickListener.onListItemClick(movieList.get(getAdapterPosition()));
             } else {
                 Log.w(TAG_ONCLICK, "movieData is null");
             }

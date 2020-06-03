@@ -7,11 +7,11 @@ public enum PosterSizes {
     NORMAL(342),
     LARGE(500),
     EXTRA_LARGE(780),
-    ORIGINAL(-1);
+    ORIGINAL(100000);
 
     public final int size;
 
-    private PosterSizes(int size) {
+    PosterSizes(int size) {
         this.size = size;
     }
 }

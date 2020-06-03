@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {FavMovieEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {MovieEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class FavMovieDatabase extends RoomDatabase {
 

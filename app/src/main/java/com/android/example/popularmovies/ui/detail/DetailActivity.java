@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.ActivityDetailBinding;
 import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.text.ParseException;
+import java.util.Date;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
             mediator.attach();
         }
 
-        FavMovieEntry movie = getMovie();
+        MovieEntry movie = getMovie();
         if (movie != null) {
             viewModel = new ViewModelProvider(this,
                     DetailViewModelFactory.getInstance(getApplication(), movie))
@@ -89,24 +89,19 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Nullable
-    public FavMovieEntry getMovie() {
+    public MovieEntry getMovie() {
         Intent intent = getIntent();
         if (intent.hasExtra(JsonUtils.TITLE)) {
-            FavMovieEntry movie;
-            try {
-                movie = new FavMovieEntry(
-                        intent.getIntExtra(JsonUtils.MOVIE_ID, -1),
-                        intent.getStringExtra(JsonUtils.TITLE),
-                        intent.getStringExtra(JsonUtils.OVERVIEW),
-                        intent.getDoubleExtra(JsonUtils.VOTE_AVERAGE, 0.0),
-                        intent.getStringExtra(JsonUtils.POSTER_PATH),
-                        intent.getStringExtra(JsonUtils.RELEASE_DATE)
-                );
-                return movie;
-            } catch (ParseException e) {
-                Log.e(getClass().getSimpleName(), "Could not parse date passed by API", e);
-                return null;
-            }
+            MovieEntry movie;
+            movie = new MovieEntry(
+                    intent.getIntExtra(JsonUtils.MOVIE_ID, -1),
+                    intent.getStringExtra(JsonUtils.TITLE),
+                    intent.getStringExtra(JsonUtils.OVERVIEW),
+                    intent.getDoubleExtra(JsonUtils.VOTE_AVERAGE, 0.0),
+                    intent.getStringExtra(JsonUtils.POSTER_PATH),
+                    (Date) intent.getSerializableExtra(JsonUtils.RELEASE_DATE)
+            );
+            return movie;
         } else {
             return null;
         }

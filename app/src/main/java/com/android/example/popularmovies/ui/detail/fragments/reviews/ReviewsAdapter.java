@@ -35,10 +35,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         context = null;
     }
 
-    public ReviewsAdapter(Context c, ReviewOnClickListener listener){
+    public ReviewsAdapter(@NonNull Context c, ReviewOnClickListener listener){
         onClickListener = listener;
         context = c;
-        markwon = Markwon.create(c);
+        markwon = Markwon.create(context);
     }
 
     @NonNull
@@ -70,7 +70,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         notifyDataSetChanged();
     }
 
-    public void setupMarkdownParsing(Context c){
+    public void setupMarkdownParsing(@NonNull Context c){
         if (context == null || !context.equals(c)){
             context = c;
         }

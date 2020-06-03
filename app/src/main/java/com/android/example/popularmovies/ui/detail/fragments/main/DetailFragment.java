@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.FragmentDetailBinding;
+import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.ui.detail.DetailViewModel;
 import com.android.example.popularmovies.ui.detail.DetailViewModelFactory;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
@@ -43,7 +44,7 @@ public class DetailFragment extends BaseDetailFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Create Viewmodel
-        FavMovieEntry movie = getMovie();
+        MovieEntry movie = getMovie();
         if (movie != null){
             viewModel = new ViewModelProvider(requireActivity(), DetailViewModelFactory
                     .getInstance(requireActivity().getApplication(), movie))
@@ -62,7 +63,7 @@ public class DetailFragment extends BaseDetailFragment {
         binding.tvDesc.setText(viewModel.getMovie().getValue().getDescription());
         binding.tvReleaseDate.setText(getString(R.string.date_detail, viewModel.getMovie().getValue().getReleaseDate()));
         binding.tvRating.setText(getString(R.string.rating_detail, viewModel.getMovie().getValue().getUserRating()));
-        Picasso.get().load(viewModel.getMovie().getValue().getPosterUrl())
+        Picasso.get().load(viewModel.getMovie().getValue().getPosterUri(PosterSizes.SMALL))
                 .placeholder(R.drawable.loading_poster)
                 .error(R.drawable.error_poster)
                 .into(binding.ivPosterThumbnail);

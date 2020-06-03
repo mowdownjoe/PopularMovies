@@ -1,6 +1,7 @@
 package com.android.example.popularmovies.ui.main;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,6 +10,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.example.popularmovies.database.FavMovieDatabase;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.utils.json.JsonUtils;
 import com.android.example.popularmovies.utils.json.MovieJsonException;
 import com.android.example.popularmovies.utils.network.LoadingStatus;
@@ -19,11 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainViewModel extends ViewModel {
 
     private MutableLiveData<LoadingStatus> status;
-    private MutableLiveData<JSONArray> movieData;
+    private MutableLiveData<List<MovieEntry>> movieList;
     private static FetchMoviesTask fetchMoviesTask;
 
     LiveData<LoadingStatus> getStatus() {
@@ -34,8 +38,8 @@ public class MainViewModel extends ViewModel {
         status.postValue(newStatus);
     }
 
-    LiveData<JSONArray> getMovieData() {
-        return movieData;
+    public LiveData<List<MovieEntry>> getMovieList() {
+        return movieList;
     }
 
     void fetchMovieData(@NonNull String apiKey, String sortOrder){
@@ -49,7 +53,7 @@ public class MainViewModel extends ViewModel {
     public MainViewModel() {
         super();
         status = new MutableLiveData<>();
-        movieData = new MutableLiveData<>();
+        movieList = new MutableLiveData<>();
         status.setValue(LoadingStatus.INIT);
     }
 
@@ -82,7 +86,7 @@ public class MainViewModel extends ViewModel {
             try {
                 JSONObject rawResponse = NetworkUtils.getMovies(sortOrder, apiKey);
                 if (rawResponse != null) {
-                    return JsonUtils.getResultsArray(rawResponse);
+                    return JsonUtils.getMovieResultsArray(rawResponse);
                 } else {
                     return null;
                 }
@@ -97,8 +101,13 @@ public class MainViewModel extends ViewModel {
             super.onPostExecute(jsonArray);
 
             if (jsonArray != null) {
-                movieData.postValue(jsonArray);
-                status.postValue(LoadingStatus.DONE);
+                try {
+                    movieList.postValue(JsonUtils.parseMovieJson(jsonArray));
+                    status.postValue(LoadingStatus.DONE);
+                } catch (JSONException | IOException e) {
+                    status.postValue(LoadingStatus.ERROR);
+                    Log.e(getClass().getSimpleName(), "Error parsing movie JSON.", e);
+                }
             } else {
                 status.postValue(LoadingStatus.ERROR);
             }

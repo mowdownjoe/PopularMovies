@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.FragmentReviewsBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieReview;
@@ -80,7 +80,7 @@ public class ReviewsFragment extends BaseDetailFragment implements ReviewsAdapte
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FavMovieEntry movie = getMovie();
+        MovieEntry movie = getMovie();
         if (movie != null) {
             viewModel.fetchReviews(getString(R.string.api_key_v3), movie.getId());
         } else {

@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.ui.PosterSizes;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.squareup.moshi.JsonAdapter;
@@ -41,7 +41,7 @@ public class JsonUtils {
     public static final String VIDEOS = "videos";
 
     @Nullable
-    public static JSONArray getResultsArray(@NonNull JSONObject rawResponse) throws JSONException {
+    public static JSONArray getMovieResultsArray(@NonNull JSONObject rawResponse) throws JSONException {
         if (rawResponse.has(RESULTS)) {
             return rawResponse.getJSONArray(RESULTS);
         } else if (rawResponse.has(ERROR_STATUS)) {
@@ -54,10 +54,12 @@ public class JsonUtils {
         }
     }
 
-    public static List<FavMovieEntry> parseMovieJson(@NonNull JSONArray moviesJson) throws JSONException, IOException {
-        Moshi moshi = new Moshi.Builder().add(Date.class, new Rfc3339DateJsonAdapter()).build();
-        JsonAdapter<FavMovieEntry> adapter = moshi.adapter(FavMovieEntry.class);
-        ArrayList<FavMovieEntry> movies = new ArrayList<>();
+    public static List<MovieEntry> parseMovieJson(@NonNull JSONArray moviesJson) throws JSONException, IOException {
+        Moshi moshi = new Moshi.Builder()
+                .add(Date.class, new Rfc3339DateJsonAdapter())
+                .build();
+        JsonAdapter<MovieEntry> adapter = moshi.adapter(MovieEntry.class);
+        ArrayList<MovieEntry> movies = new ArrayList<>();
         for (int i = 0; i < moviesJson.length(); i++) {
             movies.add(adapter.fromJson(moviesJson.getJSONObject(i).toString()));
         }

@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.example.popularmovies.R;
-import com.android.example.popularmovies.database.FavMovieEntry;
+import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.FragmentVideosBinding;
 import com.android.example.popularmovies.ui.detail.fragments.BaseDetailFragment;
 import com.android.example.popularmovies.utils.json.MovieVideo;
@@ -76,7 +76,7 @@ public class VideosFragment extends BaseDetailFragment implements VideosAdapter.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FavMovieEntry movie = getMovie();
+        MovieEntry movie = getMovie();
         if (movie != null) {
             viewModel.fetchVideos(getString(R.string.api_key_v3), movie.getId());
         } else {

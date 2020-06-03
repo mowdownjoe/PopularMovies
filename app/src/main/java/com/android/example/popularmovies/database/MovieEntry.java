@@ -18,10 +18,16 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity(tableName = "movies")
-public class FavMovieEntry {
+public class MovieEntry {
+
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    static final String ID = "id";
+    static final String TITLE = "title";
 
     @PrimaryKey(autoGenerate = false) //Will use ID from API
+    @Json(name = ID)
     private int id;
+    @Json(name = TITLE)
     private String title;
     @ColumnInfo(name = JsonUtils.OVERVIEW)
     @Json(name = JsonUtils.OVERVIEW)
@@ -36,8 +42,9 @@ public class FavMovieEntry {
     @Json(name = JsonUtils.RELEASE_DATE)
     private Date releaseDate;
 
-    public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,
-                         Date releaseDate) {
+
+    public MovieEntry(int id, String title, String description, double userRating, String posterUrl,
+                      Date releaseDate) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -48,15 +55,15 @@ public class FavMovieEntry {
 
     @Ignore
     @SuppressLint("SimpleDateFormat")
-    public FavMovieEntry(int id, String title, String description, double userRating, String posterUrl,
-                         String releaseDateString) throws ParseException {
+    public MovieEntry(int id, String title, String description, double userRating, String posterUrl,
+                      String releaseDateString) throws ParseException {
         this.id = id;
         this.title = title;
         this.description = description;
         this.userRating = userRating;
         this.posterUrl = posterUrl;
         //Parses date string passed by API
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat(DATE_PATTERN);
         releaseDate = format.parse(releaseDateString);
     }
 
@@ -112,7 +119,7 @@ public class FavMovieEntry {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FavMovieEntry that = (FavMovieEntry) o;
+        MovieEntry that = (MovieEntry) o;
         return id == that.id &&
                 Double.compare(that.userRating, userRating) == 0 &&
                 Objects.equals(title, that.title) &&
@@ -133,4 +140,5 @@ public class FavMovieEntry {
             return Uri.parse(JsonUtils.BASE_POSTER_PATH + 'w' + size.size + posterUrl);
         }
     }
+
 }
