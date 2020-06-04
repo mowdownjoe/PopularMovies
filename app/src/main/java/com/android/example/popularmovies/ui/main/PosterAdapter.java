@@ -20,7 +20,6 @@ import java.util.List;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
 
-    //TODO Refactor to use List<MovieEntry> instead of raw JSON
     //TODO Implement paging using androidx.paging library
 
     @Nullable

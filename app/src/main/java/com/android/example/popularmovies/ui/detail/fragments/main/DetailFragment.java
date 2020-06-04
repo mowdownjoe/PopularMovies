@@ -59,7 +59,6 @@ public class DetailFragment extends BaseDetailFragment {
         super.onActivityCreated(savedInstanceState);
         //Propagate data from ViewModel into UI
         binding.tvMovieTitle.setText(viewModel.getMovie().getValue().getTitle());
-        //Assuming that if one extra is included from explicit intent, others will be.
         binding.tvDesc.setText(viewModel.getMovie().getValue().getDescription());
         binding.tvReleaseDate.setText(getString(R.string.date_detail, viewModel.getMovie().getValue().getReleaseDate()));
         binding.tvRating.setText(getString(R.string.rating_detail, viewModel.getMovie().getValue().getUserRating()));

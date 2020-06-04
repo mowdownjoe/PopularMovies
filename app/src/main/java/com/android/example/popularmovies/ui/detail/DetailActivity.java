@@ -3,6 +3,7 @@ package com.android.example.popularmovies.ui.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,6 +77,20 @@ public class DetailActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 Log.e(getClass().getSimpleName(), "ViewModel has not initialized isFav.", e);
             }
+        });
+        binding.fab.setOnLongClickListener(v -> {
+            try {
+                boolean isFav = viewModel.getIsFav().getValue();
+                if (isFav){
+                    Toast.makeText(this, "Remove from Favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Add to Favorites", Toast.LENGTH_SHORT).show();
+                }
+            } catch (NullPointerException e) {
+                Log.e(getClass().getSimpleName(), "ViewModel has not initialized isFav.", e);
+                return false;
+            }
+            return true;
         });
     }
 

@@ -2,6 +2,7 @@ package com.android.example.popularmovies.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.android.example.popularmovies.utils.json.JsonUtils;
-import com.android.example.popularmovies.utils.network.LoadingStatus;
 import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.PosterOnClickListener {
@@ -43,18 +43,22 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         binding.rvMoviePosterGrid.setAdapter(adapter);
 
         viewModel.getStatus().observe(this, loadingStatus -> {
-            if (loadingStatus == LoadingStatus.LOADING){
-                binding.pbLoadingSpinner.setVisibility(View.VISIBLE);
-                binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
-                binding.tvErrorText.setVisibility(View.INVISIBLE);
-            } else if (loadingStatus == LoadingStatus.ERROR){
-                binding.tvErrorText.setVisibility(View.VISIBLE);
-                binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
-                binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);
-            } else if (loadingStatus == LoadingStatus.DONE){
-                binding.rvMoviePosterGrid.setVisibility(View.VISIBLE);
-                binding.tvErrorText.setVisibility(View.INVISIBLE);
-                binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);
+            switch (loadingStatus){
+                case LOADING:
+                    binding.pbLoadingSpinner.setVisibility(View.VISIBLE);
+                    binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
+                    binding.tvErrorText.setVisibility(View.INVISIBLE);
+                    break;
+                case DONE:
+                    binding.rvMoviePosterGrid.setVisibility(View.VISIBLE);
+                    binding.tvErrorText.setVisibility(View.INVISIBLE);
+                    binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);
+                    break;
+                case ERROR:
+                    binding.tvErrorText.setVisibility(View.VISIBLE);
+                    binding.rvMoviePosterGrid.setVisibility(View.INVISIBLE);
+                    binding.pbLoadingSpinner.setVisibility(View.INVISIBLE);
+                    break;
             }
         });
 
@@ -77,12 +81,17 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
-        if (item.getItemId() == R.id.sort_popular_mi){
-            loadMovieData(NetworkUtils.POPULAR_NODE);
-            return true;
-        } else if (item.getItemId() == R.id.sort_highest_rated_mi){
-            loadMovieData(NetworkUtils.TOP_RATED_NODE);
-            return true;
+        Log.v(getLocalClassName(), "Selected "+item.getTitle());
+        switch (item.getItemId()){
+            case R.id.sort_popular_mi:
+                loadMovieData(NetworkUtils.POPULAR_NODE);
+                return true;
+            case R.id.sort_highest_rated_mi:
+                loadMovieData(NetworkUtils.TOP_RATED_NODE);
+                return true;
+            case R.id.show_favorites_mi:
+                viewModel.loadFavoriteMovies(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

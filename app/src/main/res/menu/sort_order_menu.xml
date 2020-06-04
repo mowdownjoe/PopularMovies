@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
         android:id="@+id/sort_order"
@@ -13,5 +12,9 @@
             android:id="@+id/sort_popular_mi"
             android:contentDescription="@string/sort_popular_str"
             android:title="@string/sort_popular_str" />
+        <item
+            android:id="@+id/show_favorites_mi"
+            android:contentDescription="@string/show_favs_str"
+            android:title="@string/show_favs_str" />
     </group>
 </menu>

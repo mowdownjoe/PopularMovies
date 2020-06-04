@@ -10,12 +10,15 @@ import java.util.List;
 
 @Dao
 public interface FavMovieDao {
-    //TODO Add methods to access database
+
     @Query("SELECT COUNT(*) FROM movies WHERE id = :id")
     int countMovieById(int id); //Checks if movie with this ID exists.
 
+    @Query("SELECT EXISTS(SELECT 1 FROM movies WHERE id = :id)")
+    LiveData<Boolean> doesMovieExist(int id);
+
     @Query("SELECT * FROM movies")
-    LiveData<List<MovieEntry>> getAllFavorites();
+    List<MovieEntry> getAllFavorites();
 
     @Insert
     void addMovieToFavorites(MovieEntry movieEntry);

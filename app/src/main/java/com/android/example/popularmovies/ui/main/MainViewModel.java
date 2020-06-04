@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.example.popularmovies.AppExecutors;
 import com.android.example.popularmovies.database.FavMovieDatabase;
 import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.utils.json.JsonUtils;
@@ -48,6 +49,20 @@ public class MainViewModel extends ViewModel {
         }
         fetchMoviesTask = new FetchMoviesTask();
         fetchMoviesTask.execute(apiKey, sortOrder);
+    }
+
+    void loadFavoriteMovies(Context context){
+        status.postValue(LoadingStatus.LOADING);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            List<MovieEntry> favMovies = FavMovieDatabase.getInstance(context).favMovieDao()
+                    .getAllFavorites();
+            if (favMovies != null) {
+                movieList.postValue(favMovies);
+                status.postValue(LoadingStatus.DONE);
+            } else {
+                Log.d(getClass().getSimpleName(), "Fav movie list is null");
+            }
+        });
     }
 
     public MainViewModel() {
