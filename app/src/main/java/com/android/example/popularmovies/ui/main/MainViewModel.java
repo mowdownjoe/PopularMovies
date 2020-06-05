@@ -1,16 +1,16 @@
 package com.android.example.popularmovies.ui.main;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.android.example.popularmovies.AppExecutors;
 import com.android.example.popularmovies.database.FavMovieDatabase;
 import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.utils.json.JsonUtils;
@@ -25,15 +25,32 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AndroidViewModel {
 
+    enum SortOrder{
+        POPULAR("/popular"),
+        FAVORITE("fav"),
+        TOP_RATED("/top_rated");
+
+        public final String node;
+
+        SortOrder(String node) { this.node = node; }
+    }
+
+    private MutableLiveData<SortOrder> sortOrder;
     private MutableLiveData<LoadingStatus> status;
-    private MutableLiveData<List<MovieEntry>> movieList;
+    private MutableLiveData<List<MovieEntry>> moviesFromNetwork;
+    private LiveData<List<MovieEntry>> moviesFromDb;
+    private MediatorLiveData<List<MovieEntry>> movieList;
     private static FetchMoviesTask fetchMoviesTask;
 
     LiveData<LoadingStatus> getStatus() {
         return status;
     }
+
+    void setSortOrder(SortOrder newOrder) { sortOrder.postValue(newOrder);}
+
+    LiveData<SortOrder> getSortOrder() { return sortOrder; }
 
     public void setStatus(LoadingStatus newStatus) {
         status.postValue(newStatus);
@@ -43,33 +60,34 @@ public class MainViewModel extends ViewModel {
         return movieList;
     }
 
-    void fetchMovieData(@NonNull String apiKey, String sortOrder){
+    public MainViewModel(Application app) {
+        super(app);
+        status = new MutableLiveData<>();
+        sortOrder = new MutableLiveData<>();
+        moviesFromNetwork = new MutableLiveData<>();
+        moviesFromDb = FavMovieDatabase.getInstance(app).favMovieDao().getAllFavorites();
+        movieList = new MediatorLiveData<>();
+
+        status.setValue(LoadingStatus.INIT);
+
+        movieList.addSource(moviesFromNetwork, movieEntries -> movieList.setValue(movieEntries));
+    }
+
+    void fetchMovieData(@NonNull String apiKey, SortOrder sortOrder){
+        if (sortOrder == SortOrder.FAVORITE){
+            throw new IllegalArgumentException();
+        }
+        movieList.removeSource(moviesFromDb);
         if (fetchMoviesTask != null) {
             fetchMoviesTask.cancel(true);
         }
         fetchMoviesTask = new FetchMoviesTask();
-        fetchMoviesTask.execute(apiKey, sortOrder);
+        fetchMoviesTask.execute(apiKey, sortOrder.node);
     }
 
-    void loadFavoriteMovies(Context context){
-        status.postValue(LoadingStatus.LOADING);
-        AppExecutors.getInstance().diskIO().execute(() -> {
-            List<MovieEntry> favMovies = FavMovieDatabase.getInstance(context).favMovieDao()
-                    .getAllFavorites();
-            if (favMovies != null) {
-                movieList.postValue(favMovies);
-                status.postValue(LoadingStatus.DONE);
-            } else {
-                Log.d(getClass().getSimpleName(), "Fav movie list is null");
-            }
-        });
-    }
-
-    public MainViewModel() {
-        super();
-        status = new MutableLiveData<>();
-        movieList = new MutableLiveData<>();
-        status.setValue(LoadingStatus.INIT);
+    void loadFavoriteMovies(){
+        movieList.addSource(moviesFromDb, movieEntries -> movieList.setValue(movieEntries));
+        movieList.setValue(moviesFromDb.getValue());
     }
 
     @Override
@@ -117,7 +135,7 @@ public class MainViewModel extends ViewModel {
 
             if (jsonArray != null) {
                 try {
-                    movieList.postValue(JsonUtils.parseMovieJson(jsonArray));
+                    moviesFromNetwork.postValue(JsonUtils.parseMovieJson(jsonArray));
                     status.postValue(LoadingStatus.DONE);
                 } catch (JSONException | IOException e) {
                     status.postValue(LoadingStatus.ERROR);

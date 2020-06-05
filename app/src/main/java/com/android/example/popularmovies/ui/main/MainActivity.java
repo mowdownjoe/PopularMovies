@@ -17,7 +17,6 @@ import com.android.example.popularmovies.database.MovieEntry;
 import com.android.example.popularmovies.databinding.ActivityMainBinding;
 import com.android.example.popularmovies.ui.detail.DetailActivity;
 import com.android.example.popularmovies.utils.json.JsonUtils;
-import com.android.example.popularmovies.utils.network.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.PosterOnClickListener {
 
@@ -62,6 +61,18 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
             }
         });
 
+        viewModel.getSortOrder().observe(this, sortOrder -> {
+            switch (sortOrder){
+                case POPULAR:
+                case TOP_RATED:
+                    viewModel.fetchMovieData(getString(R.string.api_key_v3), sortOrder);
+                    break;
+                case FAVORITE:
+                    viewModel.loadFavoriteMovies();
+                    break;
+            }
+        });
+
         viewModel.getMovieList().observe(this, movies -> {
             if (movies != null){
                 adapter.setMovieData(movies);
@@ -84,13 +95,13 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         Log.v(getLocalClassName(), "Selected "+item.getTitle());
         switch (item.getItemId()){
             case R.id.sort_popular_mi:
-                loadMovieData(NetworkUtils.POPULAR_NODE);
+                viewModel.setSortOrder(MainViewModel.SortOrder.POPULAR);
                 return true;
             case R.id.sort_highest_rated_mi:
-                loadMovieData(NetworkUtils.TOP_RATED_NODE);
+                viewModel.setSortOrder(MainViewModel.SortOrder.TOP_RATED);
                 return true;
             case R.id.show_favorites_mi:
-                viewModel.loadFavoriteMovies(this);
+                viewModel.setSortOrder(MainViewModel.SortOrder.FAVORITE);
                 return true;
         }
 
@@ -98,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     }
 
     private void loadMovieData(){
-        loadMovieData(NetworkUtils.POPULAR_NODE);
+        loadMovieData(MainViewModel.SortOrder.POPULAR);
     }
 
-    private void loadMovieData(String sortOrder) {
-        viewModel.fetchMovieData(getString(R.string.api_key_v3), sortOrder);
+    private void loadMovieData(MainViewModel.SortOrder sortOrder) {
+        viewModel.setSortOrder(sortOrder);
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface FavMovieDao {
     LiveData<Boolean> doesMovieExist(int id);
 
     @Query("SELECT * FROM movies")
-    List<MovieEntry> getAllFavorites();
+    LiveData<List<MovieEntry>> getAllFavorites();
 
     @Insert
     void addMovieToFavorites(MovieEntry movieEntry);
