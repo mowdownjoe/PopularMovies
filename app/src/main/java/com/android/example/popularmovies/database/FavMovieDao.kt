@@ -9,17 +9,17 @@ import androidx.room.Query
 @Dao
 interface FavMovieDao {
     @Query("SELECT COUNT(*) FROM movies WHERE id = :id")
-    fun countMovieById(id: Int): Int //Checks if movie with this ID exists.
+    suspend fun countMovieById(id: Int): Int //Checks if movie with this ID exists.
 
     @Query("SELECT EXISTS(SELECT 1 FROM movies WHERE id = :id)")
-    fun doesMovieExist(id: Int): LiveData<Boolean>
+    suspend fun doesMovieExist(id: Int): LiveData<Boolean>
 
     @Query("SELECT * FROM movies")
     fun getAllFavorites(): LiveData<List<MovieEntry>>
 
     @Insert
-    fun addMovieToFavorites(movieEntry: MovieEntry)
+    suspend fun addMovieToFavorites(movieEntry: MovieEntry)
 
     @Delete
-    fun removeMovieFromFavorites(movieEntry: MovieEntry)
+    suspend fun removeMovieFromFavorites(movieEntry: MovieEntry)
 }

@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.Recycler
 
 /*
 * Sourced from https://github.com/moonlsd/RecyclerViewCollection/blob/57eea45f0b39676ba40d1a06e1e5d8c15c372983/app/src/main/java/com/codentrick/recyclerviewcollection/ui/GridActivity.java
-* */   class GridAutofitLayoutManager : GridLayoutManager {
+* */
+class GridAutofitLayoutManager : GridLayoutManager {
     private var mColumnWidth = 0
     private var mColumnWidthChanged = true
 
@@ -17,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView.Recycler
         setColumnWidth(checkedColumnWidth(context, columnWidth))
     }
 
-    constructor(context: Context, columnWidth: Int, orientation: Int, reverseLayout: Boolean) : super(context, 1, orientation, reverseLayout) {
+    constructor(context: Context, columnWidth: Int, orientation: Int, reverseLayout: Boolean) :
+            super(context, 1, orientation, reverseLayout) {
         /* Initially set spanCount to 1, will be changed automatically later. */
         setColumnWidth(checkedColumnWidth(context, columnWidth))
     }
@@ -43,13 +45,12 @@ import androidx.recyclerview.widget.RecyclerView.Recycler
 
     override fun onLayoutChildren(recycler: Recycler, state: RecyclerView.State) {
         if (mColumnWidthChanged && mColumnWidth > 0) {
-            val totalSpace: Int
-            totalSpace = if (orientation == LinearLayoutManager.VERTICAL) {
+            val totalSpace: Int = if (orientation == LinearLayoutManager.VERTICAL) {
                 width - paddingRight - paddingLeft
             } else {
                 height - paddingTop - paddingBottom
             }
-            val spanCount = Math.max(1, totalSpace / mColumnWidth)
+            val spanCount = 1.coerceAtLeast(totalSpace / mColumnWidth)
             setSpanCount(spanCount)
             mColumnWidthChanged = false
         }

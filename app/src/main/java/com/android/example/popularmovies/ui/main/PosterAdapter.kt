@@ -34,21 +34,15 @@ class PosterAdapter(private val onClickListener: PosterOnClickListener) : Recycl
 
     override fun onBindViewHolder(holder: PosterViewHolder, position: Int) {
         if (movieList != null) {
-            holder.bind(movieList!![position]!!.getPosterUri(PosterSizes.LARGE))
+            holder.bind(movieList!![position].getPosterUri(PosterSizes.LARGE))
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (movieList != null) {
-            movieList!!.size
-        } else {
-            0
-        }
-    }
+    override fun getItemCount(): Int = movieList?.size ?: 0
 
     inner class PosterViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val _onClick = "PosterViewHolderOnClick"
-        private var posterImage: ImageView = itemView.findViewById(R.id.iv_poster_image)
+        private val posterImage: ImageView = itemView.findViewById(R.id.iv_poster_image)
         fun bind(url: String?) {
             val uri = Uri.parse(url)
             bind(uri)
@@ -71,8 +65,6 @@ class PosterAdapter(private val onClickListener: PosterOnClickListener) : Recycl
                 Log.w(_onClick, "movieData is null")
             }
         }
-
-
 
         init {
             itemView.setOnClickListener(this)

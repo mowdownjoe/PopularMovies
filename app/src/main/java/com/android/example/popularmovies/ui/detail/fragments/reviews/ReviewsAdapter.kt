@@ -31,13 +31,7 @@ class ReviewsAdapter(c: Context, private val listener: ReviewOnClickListener) : 
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (mReviews != null) {
-            mReviews!!.size
-        } else {
-            0
-        }
-    }
+    override fun getItemCount(): Int = mReviews?.size ?: 0
 
     fun setReviews(reviews: List<MovieReview>?) {
         mReviews = reviews

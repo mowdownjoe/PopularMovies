@@ -33,7 +33,5 @@ class VideosViewModel : ViewModel() {
         }
     }
 
-    fun setStatus(newStatus: LoadingStatus?) {
-        _status.postValue(newStatus)
-    }
+    fun setStatus(newStatus: LoadingStatus?) = _status.postValue(newStatus)
 }

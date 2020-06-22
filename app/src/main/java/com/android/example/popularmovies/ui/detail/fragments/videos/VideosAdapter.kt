@@ -28,13 +28,7 @@ class VideosAdapter(private val onClickListener: VideoOnClickListener) : Recycle
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (mVideos != null) {
-            mVideos!!.size
-        } else {
-            0
-        }
-    }
+    override fun getItemCount(): Int = mVideos?.size ?: 0
 
     fun setVideos(videos: List<MovieVideo>?) {
         mVideos = videos

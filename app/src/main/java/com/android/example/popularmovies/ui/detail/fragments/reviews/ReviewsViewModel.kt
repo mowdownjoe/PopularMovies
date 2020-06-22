@@ -15,9 +15,7 @@ class ReviewsViewModel : ViewModel() {
     private val _reviews: MutableLiveData<List<MovieReview>> = MutableLiveData()
     val reviews: LiveData<List<MovieReview>> get() = _reviews
 
-    fun setStatus(newStatus: LoadingStatus) {
-        _status.postValue(newStatus)
-    }
+    fun setStatus(newStatus: LoadingStatus) = _status.postValue(newStatus)
 
     fun fetchReviews(apiKey: String, movieId: Int) {
         _status.postValue(LoadingStatus.LOADING)
