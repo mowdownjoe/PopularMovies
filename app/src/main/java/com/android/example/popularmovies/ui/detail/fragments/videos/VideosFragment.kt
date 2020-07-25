@@ -51,7 +51,7 @@ class VideosFragment : BaseDetailFragment(), VideoOnClickListener {
                 }
             }
         })
-        viewModel!!.videos.observe(viewLifecycleOwner, Observer { movieVideos: List<MovieVideo>? ->
+        viewModel.videos.observe(viewLifecycleOwner, Observer { movieVideos: List<MovieVideo>? ->
             if (movieVideos != null && movieVideos.isNotEmpty()) {
                 adapter.setVideos(movieVideos)
             }

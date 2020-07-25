@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), PosterOnClickListener {
         binding.rvMoviePosterGrid.layoutManager = layoutManager
         adapter = PosterAdapter(this)
         binding.rvMoviePosterGrid.adapter = adapter
-        viewModel.status.observe(this, Observer { loadingStatus: LoadingStatus? ->
+        viewModel.status.observe(this, Observer { loadingStatus: LoadingStatus ->
             when (loadingStatus) {
                 LoadingStatus.LOADING -> {
                     binding.pbLoadingSpinner.visibility = View.VISIBLE

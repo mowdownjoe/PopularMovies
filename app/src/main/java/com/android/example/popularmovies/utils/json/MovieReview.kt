@@ -4,15 +4,15 @@ import android.net.Uri
 import androidx.core.net.toUri
 import java.util.*
 
-class MovieReview(var author: String, var content: String, var id: String, var url: String) {
+class MovieReview(val author: String, val content: String, val id: String, val url: String) {
 
     val urlAsUri: Uri
         get() = url.toUri()
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val that = o as MovieReview
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as MovieReview
         return author == that.author && content == that.content && id == that.id && url == that.url
     }
 

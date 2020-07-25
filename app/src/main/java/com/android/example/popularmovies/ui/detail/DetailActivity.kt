@@ -26,7 +26,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (binding.tabs != null) {
             val sectionsPagerAdapter = DetailSectionsPagerAdapter(this)
-            binding.viewPager!!.adapter = sectionsPagerAdapter //Must exist in layout if tabs exist.
+            binding.viewPager?.adapter = sectionsPagerAdapter //Must exist in layout if tabs exist.
             mediator = TabLayoutMediator(binding.tabs!!, binding.viewPager!!,
                     TabConfigurationStrategy { tab: TabLayout.Tab, position: Int ->
                         when (position) {
@@ -35,7 +35,7 @@ class DetailActivity : AppCompatActivity() {
                             2 -> tab.setText(R.string.tab_header_videos)
                         }
                     })
-            mediator!!.attach()
+            mediator?.attach()
         }
         val movie = movie
         viewModel = if (movie != null) {
@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
             return
         }
         viewModel.isFav.observe(this, Observer { isFav: Boolean? ->
-            if (isFav!!) {
+            if (requireNotNull(isFav)) {
                 binding.fab.setImageResource(R.drawable.ic_unfav_action)
             } else {
                 binding.fab.setImageResource(R.drawable.ic_fav_action)
@@ -84,7 +84,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (mediator != null) {
-            mediator!!.detach()
+            mediator?.detach()
             mediator = null
         }
     }
