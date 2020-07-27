@@ -27,7 +27,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val status: LiveData<LoadingStatus>
         get() = _status
     private val moviesFromNetwork: MutableLiveData<List<MovieEntry>> = MutableLiveData()
-    private val moviesFromDb: LiveData<List<MovieEntry>> = FavMovieDatabase.getInstance(app)!!
+    private val moviesFromDb: LiveData<List<MovieEntry>> = FavMovieDatabase.getInstance(app)
             .favMovieDao().getAllFavorites()
     private val _movieList: MediatorLiveData<List<MovieEntry>> = MediatorLiveData()
     val movieList: LiveData<List<MovieEntry>>
@@ -65,7 +65,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun fetchNextPage(apiKey: String){
         require(_sortOrder.value != SortOrder.FAVORITE)
         requireNotNull(cachedResults)
-        require(cachedResults?.page!! > cachedResults?.totalPages!!)
+        require(cachedResults!!.page > cachedResults!!.totalPages)
         viewModelScope.launch {
             try {
                 cachedResults = MovieDbAPI.apiService.getMovies(_sortOrder.value?.node!!, apiKey, cachedResults?.page!! +1)

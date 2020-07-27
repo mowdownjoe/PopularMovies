@@ -28,7 +28,8 @@ class DetailFragment : BaseDetailFragment() {
         //Create Viewmodel
         val movie = movie
         if (movie != null) {
-            viewModel = ViewModelProvider(requireActivity(), DetailViewModelFactory.getInstance(requireActivity().application, movie)!!)
+            viewModel = ViewModelProvider(requireActivity(),
+                    DetailViewModelFactory.getInstance(requireActivity().application, movie)!!)
                     .get(DetailViewModel::class.java)
         } else {
             requireActivity().finish()

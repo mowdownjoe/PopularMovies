@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.android.example.popularmovies.R
 import com.android.example.popularmovies.database.MovieEntry
@@ -40,13 +41,11 @@ class PosterAdapter(private val onClickListener: PosterOnClickListener) : Recycl
 
     override fun getItemCount(): Int = movieList?.size ?: 0
 
-    inner class PosterViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val _onClick = "PosterViewHolderOnClick"
         private val posterImage: ImageView = itemView.findViewById(R.id.iv_poster_image)
-        fun bind(url: String?) {
-            val uri = Uri.parse(url)
-            bind(uri)
-        }
+
+        fun bind(url: String?) = bind(url?.toUri())
 
         fun bind(uri: Uri?) {
             Log.v("PosterViewHolder.bind", "Loading from URI: " + uri.toString())

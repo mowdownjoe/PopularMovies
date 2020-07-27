@@ -18,7 +18,7 @@ abstract class FavMovieDatabase : RoomDatabase() {
         private val LOCK = Any()
         private const val DATABASE_NAME = "fav_movies"
         private var sInstance: FavMovieDatabase? = null
-        fun getInstance(context: Context): FavMovieDatabase? {
+        fun getInstance(context: Context): FavMovieDatabase {
             if (sInstance == null) {
                 synchronized(LOCK) {
                     Log.d(LOG_TAG, "Creating new database instance")
@@ -27,7 +27,7 @@ abstract class FavMovieDatabase : RoomDatabase() {
                 }
             }
             Log.d(LOG_TAG, "Returning database instance")
-            return sInstance
+            return sInstance!!
         }
     }
 }

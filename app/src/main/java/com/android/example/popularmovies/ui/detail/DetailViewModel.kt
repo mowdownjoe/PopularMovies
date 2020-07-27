@@ -21,7 +21,7 @@ class DetailViewModel(private val app: Application, movie: MovieEntry) : Android
         viewModelScope.launch {
             val id = requireNotNull(movie.value).id
             _isFav.postValue(requireNotNull(FavMovieDatabase.getInstance(requireNotNull(app.applicationContext))
-                    ?.favMovieDao()?.countMovieById(id)) > 0)
+                    .favMovieDao().countMovieById(id)) > 0)
         }
     }
 
@@ -29,7 +29,7 @@ class DetailViewModel(private val app: Application, movie: MovieEntry) : Android
     fun addToFavs() {
         if (_isFav.value != null && !_isFav.value!!) {
             viewModelScope.launch {
-                FavMovieDatabase.getInstance(app.applicationContext)!!.favMovieDao()
+                FavMovieDatabase.getInstance(app.applicationContext).favMovieDao()
                         .addMovieToFavorites(movie.value!!)
                 _isFav.postValue(true)
             }
@@ -40,7 +40,7 @@ class DetailViewModel(private val app: Application, movie: MovieEntry) : Android
     fun removeFromFavs() {
         if (_isFav.value != null && _isFav.value!!) {
             viewModelScope.launch {
-                FavMovieDatabase.getInstance(app.applicationContext)!!.favMovieDao()
+                FavMovieDatabase.getInstance(app.applicationContext).favMovieDao()
                         .removeMovieFromFavorites(movie.value!!)
                 _isFav.postValue(false)
             }
