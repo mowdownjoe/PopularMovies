@@ -40,7 +40,7 @@ class DetailActivity : AppCompatActivity() {
         val movie = movie
         viewModel = if (movie != null) {
             ViewModelProvider(this,
-                    DetailViewModelFactory.Companion.getInstance(application, movie)!!)
+                    DetailViewModelFactory.getInstance(application, movie)!!)
                     .get(DetailViewModel::class.java)
         } else {
             finish()
@@ -54,28 +54,25 @@ class DetailActivity : AppCompatActivity() {
             }
         })
         binding.fab.setOnClickListener {
-            try {
-                val isFav = viewModel.isFav.value!!
-                if (isFav) {
-                    viewModel.removeFromFavs()
-                } else {
-                    viewModel.addToFavs()
-                }
-            } catch (e: NullPointerException) {
-                Log.e(javaClass.simpleName, "ViewModel has not initialized isFav.", e)
+            val isFav = requireNotNull(viewModel.isFav.value) { //If null:
+                Log.e(javaClass.simpleName, "ViewModel has not initialized isFav.")
+                return@setOnClickListener
+            }
+            if (isFav) {
+                viewModel.removeFromFavs()
+            } else {
+                viewModel.addToFavs()
             }
         }
         binding.fab.setOnLongClickListener {
-            try {
-                val isFav = viewModel.isFav.value!!
-                if (isFav) {
-                    Toast.makeText(this, R.string.remove_fav_hint, Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, R.string.add_fav_hint, Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: NullPointerException) {
-                Log.e(javaClass.simpleName, "ViewModel has not initialized isFav.", e)
+            val isFav = requireNotNull(viewModel.isFav.value) {
+                Log.e(javaClass.simpleName, "ViewModel has not initialized isFav.")
                 return@setOnLongClickListener false
+            }
+            if (isFav) {
+                Toast.makeText(this, R.string.remove_fav_hint, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, R.string.add_fav_hint, Toast.LENGTH_SHORT).show()
             }
             true
         }
@@ -91,9 +88,8 @@ class DetailActivity : AppCompatActivity() {
 
     val movie: MovieEntry?
         get() {
-            val intent = intent
             return if (intent.hasExtra(JsonUtils.TITLE)) {
-                val movie: MovieEntry = MovieEntry(
+                MovieEntry(
                         intent.getIntExtra(JsonUtils.MOVIE_ID, -1),
                         intent.getStringExtra(JsonUtils.TITLE),
                         intent.getStringExtra(JsonUtils.OVERVIEW),
@@ -101,7 +97,6 @@ class DetailActivity : AppCompatActivity() {
                         intent.getStringExtra(JsonUtils.POSTER_PATH),
                         intent.getSerializableExtra(JsonUtils.RELEASE_DATE) as Date
                 )
-                movie
             } else {
                 null
             }
