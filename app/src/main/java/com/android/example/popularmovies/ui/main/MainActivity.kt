@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity(), PosterOnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvMoviePosterGrid.setHasFixedSize(true)
-        val layoutManager = GridAutofitLayoutManager(this, 490, RecyclerView.VERTICAL, false)
-        binding.rvMoviePosterGrid.layoutManager = layoutManager
+        binding.rvMoviePosterGrid.layoutManager = GridAutofitLayoutManager(this, 490, RecyclerView.VERTICAL, false)
         adapter = PosterAdapter(this)
         binding.rvMoviePosterGrid.adapter = adapter
         viewModel.status.observe(this, Observer { loadingStatus: LoadingStatus ->
